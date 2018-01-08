@@ -4,7 +4,7 @@
             <!--头部-->
             <el-col :span="24" class="topbar-wrap">
                 <div class="topbar-logo topbar-btn">
-                    <a href="/" style="margin: 10px 0 0 10px;height:30px;border:0;color:#fff">新河麻将管理后台</a>
+                    <a href="/" style="margin: 10px 0 0 10px;height:30px;border:0;color:#fff">测试</a>
                 </div>
             </el-col>
             <!--中间-->
