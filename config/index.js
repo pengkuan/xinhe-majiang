@@ -6,13 +6,12 @@ const path = require('path')
 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: { //if need 
         '/pengkuan': {
-            target: 'https://business.huishoubao.com', // 你接口的域名
+            target: 'http://api.mogumj.com', // 你接口的域名
             pathRewrite: {
                 '^/pengkuan': ''
             },

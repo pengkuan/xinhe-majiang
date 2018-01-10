@@ -1,6 +1,5 @@
 <template>
     <div>
-        <!-- <anchored1-heading :level="1">测试</anchored1-heading> -->
         <el-row>
             <el-col :span="12">
                 <div id="bar1" style="width: 600px;height: 400px;"></div>
@@ -40,7 +39,6 @@ export default {
                     text: '世界人口总量',
                     subtext: '数据来自网络',
                     left: "center",
-                    // textStyle:{align:'center'}
                 },
                 tooltip: {
                     trigger: 'axis',
@@ -115,7 +113,6 @@ export default {
                     text: '世界人口总量',
                     subtext: '数据来自网络',
                     left: "center",
-                    // textStyle:{align:'center'}
                 },
                 tooltip: {
                     trigger: 'axis',
@@ -169,7 +166,6 @@ export default {
                     text: '世界人口总量',
                     subtext: '数据来自网络',
                     left: "center",
-                    // textStyle:{align:'center'}
                 },
                 tooltip: {
                     trigger: 'axis',
@@ -233,7 +229,6 @@ export default {
                     text: '世界人口总量',
                     subtext: '数据来自网络',
                     left: "center",
-                    // textStyle:{align:'center'}
                 },
                 tooltip: {
                     trigger: 'axis',
