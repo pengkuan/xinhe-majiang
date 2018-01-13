@@ -32,8 +32,8 @@ let router = new Router({
         },
         {
             path: '/',
-            // name: '代理管理', 
-            name: '测试', 
+            name: '代理管理', 
+            // name: '测试', 
             component: home,
             menuShow: true,
             iconCls: 'iconfont icon-huodong', // 图标样式class
@@ -46,8 +46,8 @@ let router = new Router({
         },
         {
             path: '/',
-            // name: '代理管理', 
-            name: '测试', 
+            name: '玩家管理', 
+            // name: '测试', 
             component: home,
             menuShow: true,
             iconCls: 'iconfont icon-huodong', // 图标样式class
@@ -59,8 +59,8 @@ let router = new Router({
         },
         {
             path: '/',
-            // name: '代理管理', 
-            name: '测试',  
+            name: '个人中心', 
+            // name: '测试',  
             component: home,
             menuShow: true,
             iconCls: 'iconfont icon-huodong', // 图标样式class
