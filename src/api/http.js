@@ -40,7 +40,6 @@ export function fetchPost(apiPath,params) {
         'session':'e68ebengek6455'
     }
     merge(resParams,params)
-    console.log(666,resParams)
 
     return new Promise((resolve, reject) => {
         axios.post(config.api+apiPath, resParams)
@@ -59,10 +58,8 @@ export function fetchGet(apiPath,params) {
         'session':'e68ebengek6455'
     }
     merge(resParams,params)
-    console.log(666,resParams)
-
     return new Promise((resolve, reject) => {
-        axios.post(config.api+apiPath, resParams)
+        axios.get(config.api+apiPath, resParams)
             .then(response => {
                 resolve(response)
             }, err => {

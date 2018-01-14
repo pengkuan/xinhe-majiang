@@ -22,18 +22,18 @@
             <el-button type="primary" @click="add" size="mini">新增</el-button>
         </div>
         <el-table border :data="dataList" style="width: 100%,min-height:300px">
-            <el-table-column prop="agentId" label="代理ID"></el-table-column>
-            <el-table-column prop="agentAccount" label="代理账号"></el-table-column>
-            <el-table-column prop="agentName" label="代理姓名"></el-table-column>
-            <el-table-column prop="agentTel" label="代理手机号"></el-table-column>
-            <el-table-column prop="agentLevel" label="代理级别"></el-table-column>
-            <el-table-column prop="higherAgent" label="上级代理"></el-table-column>
-            <el-table-column prop="agentAmount" label="代理数"></el-table-column>
-            <el-table-column prop="playerAmount" label="玩家数"></el-table-column>
-            <el-table-column prop="cardStockAmount" label="库存卡数"></el-table-column>
+            <el-table-column prop="id" label="代理ID"></el-table-column>
+            <el-table-column prop="uname" label="代理账号"></el-table-column>
+            <el-table-column prop="name" label="代理姓名"></el-table-column>
+            <el-table-column prop="phone" label="代理手机号"></el-table-column>
+            <el-table-column prop="level" label="代理级别"></el-table-column>
+            <el-table-column prop="parent" label="上级代理"></el-table-column>
+            <el-table-column prop="children" label="代理数"></el-table-column>
+            <el-table-column prop="player" label="玩家数"></el-table-column>
+            <el-table-column prop="card" label="库存卡数"></el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
-                    <el-button class='indexFunBtn' type="primary" @click="sendCard(scope.row.gameId)" size="small">发卡</el-button>
+                    <el-button class='indexFunBtn' type="primary" @click="sendCard(scope.row.id)" size="small">发卡</el-button>
                 </template>
             </el-table-column>
             
@@ -50,17 +50,7 @@ import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
-            dataList: [{
-                agentId:'a2546',
-                agentAccount:'pengzaza',
-                agentName:'pengzaza',
-                agentTel:'13410000000',
-                agentLevel:'二级',
-                higherAgent:'pengdada',
-                agentAmount:'200',
-                playerAmount:'540',
-                cardStockAmount:'1200',
-            }],
+            dataList: [],
             search: {
                 "txnId": "",
                 "pageIndex": "0",
@@ -68,22 +58,30 @@ export default {
             },
             currentPage: 1,
             total: 0
-
         }
     },
     mounted() {
         this.init()
     },
     methods: {
-        init() {
-            // api.search_grant_record(this.search).then(res => {
-            //     if (res._ret != 0) {
-            //         this.$alert(res._errStr)
-            //         return
-            //     }
-            //     this.list = res.recordList
-            //     this.total = Number(res.pageInfo.total)
-            // })
+        async init(){
+            // let res = await api.getAgentList({page:this.search.pageIndex})
+            // if (res.ret != '0') {
+            //     this.$alert(res.retinfo,"提示")
+            //     return
+            // }
+            this.dataList = [{
+                id:'a2546',
+                uname:'pengzaza',
+                name:'pengzaza',
+                phone:'13410000000',
+                level:'二级',
+                parent:'pengdada',
+                children:'200',
+                player:'540',
+                card:'1200',
+            }]
+            this.total = 1
         },
         handleCurrentChange(val) {
             this.currentPage = val
@@ -101,6 +99,7 @@ export default {
         },
           //发卡
         sendCard(id){
+            console.log(id)
             this.$router.push({
                 name:'agentCard',
                 query:{id:id}

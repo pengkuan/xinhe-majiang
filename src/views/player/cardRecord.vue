@@ -29,19 +29,7 @@ import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
-            dataList: [
-                {
-                    orderId:'5974165aee5',
-                    amount:'600',
-                    sendType:'类型1',
-                    sendId:'s123',
-                    sendAccount:'hongzhaji',
-                    acceptId:'a124',
-                    acceptAccount:'pengkuan',
-                    sendName:'xiaobai',
-                    sendTime:'2017-12-26 08:52:36',
-                }
-            ],
+            dataList: [],
             search: {
                 "txnId": "",
                 "pageIndex": "0",
@@ -56,15 +44,25 @@ export default {
         this.init()
     },
     methods: {
-        init() {
-            // api.search_grant_record(this.search).then(res => {
-            //     if (res._ret != 0) {
-            //         this.$alert(res._errStr)
-            //         return
-            //     }
-            //     this.list = res.recordList
-            //     this.total = Number(res.pageInfo.total)
-            // })
+        async init(){
+            // let res = await api.OperateData({})
+            // if (res.ret != '0') {
+            //     this.$alert(res.retinfo,"提示")
+            //     return
+            // }
+            this.dataList = [
+                {
+                    orderId:'5974165aee5',
+                    amount:'600',
+                    sendType:'类型1',
+                    sendId:'s123',
+                    sendAccount:'hongzhaji',
+                    acceptId:'a124',
+                    acceptAccount:'pengkuan',
+                    sendName:'xiaobai',
+                    sendTime:'2017-12-26 08:52:36',
+                }
+            ]
         },
         handleCurrentChange(val) {
             this.currentPage = val

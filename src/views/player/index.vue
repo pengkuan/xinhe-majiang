@@ -51,7 +51,27 @@ import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
-            dataList: [
+            dataList: [],
+            search: {
+                "txnId": "",
+                "pageIndex": "0",
+                "pageSize": "10"
+            },
+            currentPage: 1,
+            total: 0
+        }
+    },
+    mounted() {
+        this.init()
+    },
+    methods: {
+        async init(){
+            // let res = await api.OperateData({})
+            // if (res.ret != '0') {
+            //     this.$alert(res.retinfo,"提示")
+            //     return
+            // }
+            this.dataList = [
                 {
                     head:'www.baidu.com...',
                     gameId:'g3251',
@@ -60,32 +80,10 @@ export default {
                     registTime:'a124',
                     lastLoginTime:'2017-12-26 08:52:36',
                     lastLoginIp:'127.0.0.1',
-                    loginTime:'2017-12-26 08:52:36',
+                    loginTime:'2017-12-26 08:52:36'
                 }
-            ],
-            search: {
-                "txnId": "",
-                "pageIndex": "0",
-                "pageSize": "10"
-            },
-            currentPage: 1,
-            total: 0
-
-        }
-    },
-    mounted() {
-        this.init()
-    },
-    methods: {
-        init() {
-            // api.search_grant_record(this.search).then(res => {
-            //     if (res._ret != 0) {
-            //         this.$alert(res._errStr)
-            //         return
-            //     }
-            //     this.list = res.recordList
-            //     this.total = Number(res.pageInfo.total)
-            // })
+            ]
+            this.total = 1
         },
         handleCurrentChange(val) {
             this.currentPage = val

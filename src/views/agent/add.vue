@@ -90,26 +90,22 @@
         },
         methods:{
             //取消
-            cancelnow: function() {
+            cancelnow() {
                 this.$router.push({ path: '/channel/employee' });
             },
 
             //确定
-            onSubmit: function(formName) {
-                console.log(this.creatAgent)
-                return
+            async onSubmit(formName) {
                 let self = this
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        // api.addEmployeeLogic(this.creatAgent).then(res => {
-                        //     if (res.ret != '0') {
-                        //         this.$alert(res.retinfo,"提示")
-                        //         return
-                        //     }
-                        //     this.$message("成功！")
-                        //     self.$router.push({ path: '/channel/employee' });
-
-                        // })
+                        // let res = await api.addEmployeeLogic(this.creatAgent)
+                        // if (res.ret != '0') {
+                        //     this.$alert(res.retinfo,"提示")
+                        //     return
+                        // }
+                        // this.$message("成功！")
+                        // self.$router.push({ path: '/channel/employee' });
                     } else {
                         console.log('error submit!!');
                         return false;

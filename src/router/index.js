@@ -36,7 +36,7 @@ let router = new Router({
             // name: '测试', 
             component: home,
             menuShow: true,
-            iconCls: 'iconfont icon-huodong', // 图标样式class
+            iconCls: 'iconfont icon-friend_light', // 图标样式class
             children: [
                 {path: '/agent/index', component: agent.index, name: '代理列表', menuShow: true},
                 {path: '/agent/add', component: agent.add, name: 'agentAdd', menuShow: false},
@@ -50,7 +50,7 @@ let router = new Router({
             // name: '测试', 
             component: home,
             menuShow: true,
-            iconCls: 'iconfont icon-huodong', // 图标样式class
+            iconCls: 'iconfont icon-friend_light', // 图标样式class
             children: [
                 {path: '/player/index', component: player.index, name: '玩家列表', menuShow: true},
                 {path: '/player/card', component: player.card, name: 'playerCard', menuShow: false},
@@ -63,7 +63,7 @@ let router = new Router({
             // name: '测试',  
             component: home,
             menuShow: true,
-            iconCls: 'iconfont icon-huodong', // 图标样式class
+            iconCls: 'iconfont icon-settings_light', // 图标样式class
             children: [
                 {path: '/user/setPwd', component: userCenter.setPwd, name: '修改密码', menuShow: true},
             ]

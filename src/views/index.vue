@@ -28,8 +28,11 @@ export default {
     name: '',
     data() {
         return {
+            useCard:[],//房卡消耗
+            mostOnline:[],//最高在线
+            newAddUser:[],//新增用户
+            loginUser:[],//登录用户
             /**公共数据**/
-            date: ['12/07', '12/08', '12/09', '12/10', '12/11', '12/12'],
             tooltip: {
                 trigger: 'axis',
                 axisPointer: {
@@ -41,6 +44,14 @@ export default {
                 right: '15%',
                 bottom: '3%',
                 containLabel: true
+            },
+            xAxis: {
+                type: 'category',
+                data: [] //日期
+            },
+            yAxis:{
+                type: 'value',
+                boundaryGap: [0, 0.01]
             },
             legend:{
                 align: 'right',
@@ -62,7 +73,7 @@ export default {
                 legendData:{data: ['进卡', '代理','玩家']}
             },
              bar3: {
-                legendData:{data: ['房卡消耗','当天消耗']}
+                legendData:{data: ['房卡消耗','当天登录']}
             }
         }
     },
@@ -71,9 +82,7 @@ export default {
             return merge({},this.legend,this.bar1.legendData)
         },
         legend3(){
-            let obj = {}
-            merge(obj,this.legend,this.bar3.legendData)
-            return obj
+            return merge({},this.legend,this.bar3.legendData)
         },
     },
     methods: {
@@ -83,6 +92,58 @@ export default {
             //     this.$alert(res.retinfo,"提示")
             //     return
             // }
+            const list = [
+                {
+                    date :'12/07',     // 日期
+                    card :'28' ,    // 房卡消耗
+                    online :'150'  , // 最高在线
+                    user:'21' ,    // 新增用户
+                    login: '224'    // 登陆用户 
+                },{
+                    date :'12/08',     // 日期
+                    card :'28' ,    // 房卡消耗
+                    online :'150'  , // 最高在线
+                    user:'30' ,    // 新增用户
+                    login: '324'    // 登陆用户 
+                },{
+                    date :'12/09',     // 日期
+                    card :'8' ,    // 房卡消耗
+                    online :'250'  , // 最高在线
+                    user:'30' ,    // 新增用户
+                    login: '86'    // 登陆用户 
+                },{
+                    date :'12/10',     // 日期
+                    card :'28' ,    // 房卡消耗
+                    online :'150'  , // 最高在线
+                    user:'30' ,    // 新增用户
+                    login: '124'    // 登陆用户 
+                },{
+                    date :'12/11',     // 日期
+                    card :'28' ,    // 房卡消耗
+                    online :'90'  , // 最高在线
+                    user:'30' ,    // 新增用户
+                    login: '84'    // 登陆用户 
+                },{
+                    date :'12/12',     // 日期
+                    card :'21' ,    // 房卡消耗
+                    online :'115'  , // 最高在线
+                    user:'30' ,    // 新增用户
+                    login: '34'    // 登陆用户 
+                },{
+                    date :'12/13',     // 日期
+                    card :'28' ,    // 房卡消耗
+                    online :'150'  , // 最高在线
+                    user:'30' ,    // 新增用户
+                    login: '324'    // 登陆用户 
+                },
+            ]
+            list.forEach(item=>{
+                this.xAxis.data.push(item.date)
+                this.useCard.push(item.card)
+                this.mostOnline.push(item.online)
+                this.newAddUser.push(item.user)
+                this.loginUser.push(item.login )
+            })
             this.drawBar1('bar1')
             this.drawBar2('bar2')
             this.drawBar3('bar3')
@@ -98,14 +159,8 @@ export default {
                 tooltip:this.tooltip,
                 legend: this.legend1,
                 grid: this.grid,
-                xAxis: {
-                    type: 'category',
-                    data: this.date
-                },
-                yAxis: {
-                    type: 'value',
-                    boundaryGap: [0, 0.01]
-                },
+                xAxis: this.xAxis,
+                yAxis: this.yAxis,
                 series: [
                     merge({},this.series,{name:'进卡',data:[483, 834, 290, 104, 131, 1635]}),
                     merge({},this.series,{name:'代理',data:[383, 834, 290, 104, 131, 1635]}),
@@ -123,16 +178,10 @@ export default {
                 tooltip:this.tooltip,
                 legend: this.legend,
                 grid: this.grid,
-                xAxis: {
-                    type: 'category',
-                    data: this.date
-                },
-                yAxis: {
-                    type: 'value',
-                    boundaryGap: [0, 0.01]
-                },
+                xAxis: this.xAxis,
+                yAxis: this.yAxis,
                 series: [
-                    merge({},this.series,{barWidth:'30%',data:[483, 834, 290, 104, 131, 1635]})
+                    merge({},this.series,{barWidth:'50%',data:this.newAddUser})
                 ]
             })
         },
@@ -143,26 +192,14 @@ export default {
                     text: '近七天的房卡消耗和登录玩家',
                     left: "center",
                 },
-                tooltip: {
-                    trigger: 'axis',
-
-                    axisPointer: {
-                        type: 'shadow'
-                    }
-                },
+                tooltip: this.tooltip,
                 legend: this.legend3,
                 grid: this.grid,
-                xAxis: {
-                    type: 'value',
-                    boundaryGap: [0, 0.01]
-                },
-                yAxis: {
-                    type: 'category',
-                    data: this.date
-                },
+                xAxis: this.yAxis,
+                yAxis: this.xAxis,
                 series: [
-                    merge({},this.series,{name:'房卡消耗',data:[183, 834, 290, 104, 131, 1635],label:{normal:{position:'right'}}}),
-                    merge({},this.series,{name:'当天登录',data:[183, 834, 290, 104, 131, 1635],label:{normal:{position:'right'}}})
+                    merge({},this.series,{name:'房卡消耗',data:this.useCard,label:{normal:{position:'right',show:true}}}),
+                    merge({},this.series,{name:'当天登录',data:this.loginUser,label:{normal:{position:'right',show:true}}})
                 ]
             })
         },
@@ -176,16 +213,10 @@ export default {
                 tooltip: this.tooltip,
                 legend: this.legend,
                 grid: this.grid,
-                xAxis: {
-                    type: 'category',
-                    data: this.date
-                },
-                yAxis: {
-                    type: 'value',
-                    boundaryGap: [0, 0.01]
-                },
+                xAxis: this.xAxis,
+                yAxis: this.yAxis,
                 series: [
-                    merge({},this.series,{barWidth:'30%',data:[483, 834, 290, 104, 131, 1635]})
+                    merge({},this.series,{barWidth:'50%',data:this.mostOnline})
                 ]
             })
         },
@@ -193,8 +224,6 @@ export default {
     //调用
     mounted() {
         this.init()
-        
-        
     }
 }
 
