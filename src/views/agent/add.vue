@@ -18,6 +18,9 @@
             <el-form-item label="姓名："  prop='name'>
                 <el-input v-model="creatAgent.name" placeholder='请输入姓名' :maxlength='20'></el-input>
             </el-form-item>
+            <el-form-item label="手机号："  prop='phone'>
+                <el-input :type=" 'number' " v-model="creatAgent.phone" placeholder='请输入手机号' :maxlength='11'></el-input>
+            </el-form-item>
             <el-form-item label="级别：" prop='level'>
                 <el-select v-model="creatAgent.level" placeholder="请选择">
                     <el-option v-for="item in agentLevels" :key="item.id" :label="item.name" :value="item.id">
@@ -32,7 +35,7 @@
             </el-form-item>
             <el-form-item>
                 <div class="operate">
-                    <el-button @click="onSubmit" type="primary" >确认</el-button>
+                    <el-button @click="onSubmit('creatAgent')" type="primary" >确认</el-button>
                     <router-link to="index"><el-button >取消</el-button></router-link>
                 </div>
             </el-form-item>
@@ -49,6 +52,7 @@
 
 <script type="text/javascript">
     import { mapGetters } from 'vuex'
+    import md5 from 'js-md5'
     import api from '@/api/index'
 
     export default {
@@ -57,6 +61,7 @@
                 creatAgent:{
                     account:'',
                     password:'',
+                    phone:'',
                     name:'',
                     level:'',
                     giveAmount:'',
@@ -95,17 +100,26 @@
             },
 
             //确定
-            async onSubmit(formName) {
+            onSubmit(formName) {
                 let self = this
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        // let res = await api.addEmployeeLogic(this.creatAgent)
-                        // if (res.ret != '0') {
-                        //     this.$alert(res.retinfo,"提示")
-                        //     return
-                        // }
-                        // this.$message("成功！")
-                        // self.$router.push({ path: '/channel/employee' });
+                        const reqData = {
+                            'account': this.account,
+                            'password': md5(this.password),
+                            'phone':this.phone,
+                            'name':this.name,
+                            'level':this.level,
+                            'giveAmount':this.giveAmount
+                        }
+                        api.addAgent(this.creatAgent).then(res =>{
+                            if (res.ret != '0') {
+                                this.$alert(res.retinfo,"提示")
+                                return
+                            }
+                            this.$message("成功！")
+                            self.$router.push({ path: '/index' });
+                        })
                     } else {
                         console.log('error submit!!');
                         return false;

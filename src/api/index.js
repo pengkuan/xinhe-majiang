@@ -6,6 +6,7 @@ export default {
  */
     Login(params) {return http.fetchPost('/agent/session', params)},//修改密码
     modifyPwd(params) {return http.fetchPost('/agent/password', params)},//修改密码
+    addAgent(params) {return http.fetchPost('/agent/user', params)},//创建代理
 
 
 /**

@@ -44,18 +44,18 @@ export default {
         }),
     },
     mounted(){
-        this.init()
-        this._Util.delCookie('uname')
+        // this.init()
+        // this._Util.delCookie('uname')
     },
     methods: {
         init(){
             /*** if记住密码 ***/
-            let uName = this._Util.getCookie('LoginName')
-            let uPwd = this._Util.getCookie('LoginPwd')
-            if(uName){
-                this.account.uname = uName
-                this.account.pwd = uPwd
-            }
+            // let uName = this._Util.getCookie('LoginName')
+            // let uPwd = this._Util.getCookie('LoginPwd')
+            // if(uName){
+            //     this.account.uname = uName
+            //     this.account.pwd = uPwd
+            // }
         },
         enter(ev){
             this.handleLogin()
@@ -65,13 +65,14 @@ export default {
             this.$refs.AccountFrom.validate((valid) => {
                 if (valid) {
                     this.logining = true
-                    this.account.pwd = md5( this.account.pwd )
+                    let user = {
+                        uname : this.account.uname,
+                        pwd : md5( this.account.pwd )
+                    }
                     var loginParams = { 
                         'app':'xinhe',
-                        'account': this.account
+                        'account': user
                     }
-                    // console.log(loginParams)
-                    // return
                     api.Login(loginParams).then(res => {
                         this.logining = false
                         if (res.ret != '0') {
