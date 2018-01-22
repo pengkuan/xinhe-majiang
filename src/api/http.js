@@ -4,7 +4,7 @@ import merge from '@/util/merge'
 // axios 配置
 // axios.defaults.timeout = 5000;
 axios.defaults.headers.post['Content-Type'] = 'application/json'
-// axios.defaults.baseURL = ''
+// axios.defaults.baseURL = 'http://api.mogumj.com'
 
 import { Message } from 'element-ui'
 //POST传参序列化
@@ -37,7 +37,7 @@ axios.interceptors.response.use((res) => {
 
 export function fetchPost(apiPath,params) {
     var resParams = {    
-        'session':'e68ebengek6455'
+        // 'session':'e68ebengek6455'
     }
     merge(resParams,params)
 

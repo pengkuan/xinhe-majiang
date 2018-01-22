@@ -2,8 +2,8 @@
     <el-form ref="AccountFrom" :model="account" :rules="rules" label-position="left" label-width="0px"
              class="demo-ruleForm login-container">
         <h3 class="title">换机侠运营后台</h3>
-        <el-form-item prop="username">
-            <el-input type="text" v-model="account.username" @keyup.13.native="enter($event)" auto-complete="off" placeholder="账号"></el-input>
+        <el-form-item prop="uname">
+            <el-input type="text" v-model="account.uname" @keyup.13.native="enter($event)" auto-complete="off" placeholder="账号"></el-input>
         </el-form-item>
         <el-form-item prop="pwd">
             <el-input type="password" v-model="account.pwd" @keyup.13.native="enter($event)" auto-complete="off" placeholder="密码"></el-input>
@@ -17,17 +17,18 @@
 
 <script>
 import api from '@/api/index'
+import md5 from 'js-md5'
 import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
             logining: false,
             account: {
-                username: '',
+                uname: '',
                 pwd: ''
             },
             rules: {
-                username: [
+                uname: [
                     {required: true, message: '请输入账号', trigger: 'blur'},
                 ],
                 pwd: [
@@ -44,7 +45,7 @@ export default {
     },
     mounted(){
         this.init()
-        this._Util.delCookie('username')
+        this._Util.delCookie('uname')
     },
     methods: {
         init(){
@@ -52,7 +53,7 @@ export default {
             let uName = this._Util.getCookie('LoginName')
             let uPwd = this._Util.getCookie('LoginPwd')
             if(uName){
-                this.account.username = uName
+                this.account.uname = uName
                 this.account.pwd = uPwd
             }
         },
@@ -63,32 +64,31 @@ export default {
             var self = this
             this.$refs.AccountFrom.validate((valid) => {
                 if (valid) {
-                    // this.logining = true
-                    // var loginParams = { userid: this.account.username, password: this.account.pwd }
-                    // api.Login(loginParams).then(res => {
-                    //     this.logining = false
-                    //     if (res.ret != '0') {
-                    //         this.$layer.msg(res.retinfo)
-                    //         return
-                    //     }
-                    //     sessionStorage.setItem('access-user', JSON.stringify(this.account.username))
-                    //     if(this.checked){
-                    //         this._Util.setCookie("LoginName", this.account.username, 60)
-                    //         this._Util.setCookie("LoginPwd", this.account.pwd, 60)
-                    //     }else{
-                    //         this._Util.delCookie('LoginName')
-                    //         this._Util.delCookie('LoginPwd')
-                    //     }
-                    //     self.$router.push({ path: '/' })
-                    // })
-                    /******** 本地调试 ********/
-                    if(this.account.username != this.loginInfo.account ){
-                        this.$message({message:'登录账号错误！',type:'error'})
-                    }else if(this.account.pwd != this.loginInfo.pwd ){
-                        this.$message({message:'登录密码错误！',type:'error'})
-                    }else{
-                        this.$router.push({ path: '/' })
+                    this.logining = true
+                    this.account.pwd = md5( this.account.pwd )
+                    var loginParams = { 
+                        'app':'xinhe',
+                        'account': this.account
                     }
+                    // console.log(loginParams)
+                    // return
+                    api.Login(loginParams).then(res => {
+                        this.logining = false
+                        if (res.ret != '0') {
+                            this.$layer.msg(res.retinfo)
+                            return
+                        }
+
+                        self.$router.push({ path: '/' })
+                    })
+                    /******** 本地调试 ********/
+                    // if(this.account.uname != this.loginInfo.account ){
+                    //     this.$message({message:'登录账号错误！',type:'error'})
+                    // }else if(this.account.pwd != this.loginInfo.pwd ){
+                    //     this.$message({message:'登录密码错误！',type:'error'})
+                    // }else{
+                    //     this.$router.push({ path: '/' })
+                    // }
                     
                 } else {
                     console.log('error submit!!')
