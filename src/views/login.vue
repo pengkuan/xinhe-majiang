@@ -40,7 +40,8 @@ export default {
     },
     computed:{
         ...mapGetters({
-            'loginInfo':'userInfo/loginInfo'
+            'loginInfo':'userInfo/loginInfo',
+            'session':'userInfo/session',
         }),
     },
     mounted(){
@@ -67,7 +68,7 @@ export default {
                     this.logining = true
                     let user = {
                         uname : this.account.uname,
-                        pwd : md5( this.account.pwd )
+                        pwd : md5(this.account.pwd)
                     }
                     var loginParams = { 
                         'app':'xinhe',
@@ -75,11 +76,12 @@ export default {
                     }
                     api.Login(loginParams).then(res => {
                         this.logining = false
-                        if (res.ret != '0') {
+                        if (res.code != '0') {
                             this.$layer.msg(res.retinfo)
                             return
                         }
-
+                        self._Util.setCookie('xh-session',res.user.session)
+                        // self.$store.commit('userInfo/SET_SESSION',res.user.session)
                         self.$router.push({ path: '/' })
                     })
                     /******** 本地调试 ********/

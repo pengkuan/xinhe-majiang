@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+import Util from '@/util/index'
 
 import userCenter from './userCenter'
 import agent from './agent'
@@ -70,6 +71,15 @@ let router = new Router({
         },
     ]
 })
-
+router.beforeEach((to, from, next) => {
+    
+    if (to.path.startsWith('/login')) {
+        next()
+    } else {
+        const session = Util.getCookie('xh-session')
+        if(session) next()
+        else next({path: '/login'})
+    }
+})
 
 export default router

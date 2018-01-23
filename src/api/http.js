@@ -1,5 +1,6 @@
 import axios from 'axios'
 import config from '@/config/index'
+import util from '@/util/index'
 import merge from '@/util/merge'
 // axios 配置
 // axios.defaults.timeout = 5000;
@@ -8,11 +9,11 @@ axios.defaults.headers.post['Content-Type'] = 'application/json'
 
 import { Message } from 'element-ui'
 //POST传参序列化
-axios.interceptors.request.use((config) => {
-    // if(config.method  === 'post'){
-    //     config.data = qs.stringify(config.data)
+axios.interceptors.request.use((msg) => {
+    // if(msg.method  === 'post'){
+    //     msg.data = qs.stringify(msg.data)
     // }
-    return config
+    return msg
 }, (error) => {
     return Promise.reject(error)
 })
@@ -37,7 +38,8 @@ axios.interceptors.response.use((res) => {
 
 export function fetchPost(apiPath,params) {
     var resParams = {    
-        // 'session':'e68ebengek6455'
+        'app': 'xinhe',
+        'session': util.getCookie('xh-session') ? util.getCookie('xh-session'):''
     }
     merge(resParams,params)
 
@@ -55,7 +57,7 @@ export function fetchPost(apiPath,params) {
 }
 export function fetchGet(apiPath,params) {
     var resParams = {    
-        'session':'e68ebengek6455'
+        'session': util.getCookie('xh-session') ? util.getCookie('xh-session'):''
     }
     merge(resParams,params)
     return new Promise((resolve, reject) => {

@@ -32,7 +32,11 @@ function checkSpecialWord(val) {
     var reg = new RegExp("[`~!@#$^&*()=|{}':;',\\[\\].<>/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？]")
     return reg.test(val)
 }
-
+if (typeof String.prototype.startsWith != 'function') { 
+    String.prototype.startsWith = function (prefix){ 
+      return this.slice(0, prefix.length) === prefix
+    }
+}
 function checkNumber(val) {
     var reg = new RegExp("[0-9]")
     return reg.test(val)

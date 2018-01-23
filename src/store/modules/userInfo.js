@@ -1,4 +1,5 @@
 import api from '@/api/index'
+import Util from '@/util/index'
 import * as types from '../mutation-types.js'
 
  
@@ -24,7 +25,7 @@ const getters = {
     userId: state => state.userId,
     userName: state => state.userName,
     power: state => state.power,
-    loginInfo: state => state.loginInfo
+    loginInfo: state => state.loginInfo,
 }
 
 // actions
@@ -34,14 +35,9 @@ const actions = {
 
 // mutations 
 const mutations = {
-    [types.SET_POWER_LIST](state,  list ) {
-        if (list.length == 0)return
-        else{
-            list.forEach(item =>{
-                if(item in state.power) state.power[item] = false
-            })
-        }
-    } 
+    // [types.SET_SESSION](state,  val ) {
+    //     state.session = val
+    // } 
 }
 
 export default {
