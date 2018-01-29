@@ -66,24 +66,13 @@ export default {
     },
     methods: {
         async init(){
-            // let res = await api.OperateData({})
-            // if (res.ret != '0') {
-            //     this.$alert(res.retinfo,"提示")
-            //     return
-            // }
-            this.dataList = [
-                {
-                    head:'www.baidu.com...',
-                    gameId:'g3251',
-                    bindAgent:'pengkuan',
-                    restCard:'123',
-                    registTime:'a124',
-                    lastLoginTime:'2017-12-26 08:52:36',
-                    lastLoginIp:'127.0.0.1',
-                    loginTime:'2017-12-26 08:52:36'
-                }
-            ]
-            this.total = 1
+            let res = await api.playerList({page:this.search.pageIndex})
+            if (res.code != 0) {
+                this.$alert(res.msg,"提示")
+                return
+            }
+            this.dataList = res.list
+            this.total = res.total_page
         },
         handleCurrentChange(val) {
             this.currentPage = val

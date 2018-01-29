@@ -62,7 +62,7 @@ export default {
             this.handleLogin()
         },
         handleLogin() {
-            var self = this
+            let self = this
             this.$refs.AccountFrom.validate((valid) => {
                 if (valid) {
                     this.logining = true
@@ -70,14 +70,13 @@ export default {
                         uname : this.account.uname,
                         pwd : md5(this.account.pwd)
                     }
-                    var loginParams = { 
-                        'app':'xinhe',
+                    let loginParams = { 
                         'account': user
                     }
                     api.Login(loginParams).then(res => {
                         this.logining = false
                         if (res.code != '0') {
-                            this.$layer.msg(res.retinfo)
+                            this.$layer.msg(res.msg)
                             return
                         }
                         self._Util.setCookie('xh-session',res.user.session)

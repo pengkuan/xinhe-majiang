@@ -16,17 +16,13 @@
                 <el-button type="primary" @click="init">查询</el-button>
             </el-form-item>
         </el-form>
-
-
         <el-form label-width="120px">
-
             <el-form-item label="代理ID：">{{info.id}}</el-form-item>
             <el-form-item label="代理账号：">{{info.uname}}</el-form-item>
             <el-form-item label="代理手机号：">{{info.phone}}</el-form-item>
             <el-form-item label="代理姓名：">{{info.name}}</el-form-item>
             <el-form-item label="代理级别：">{{info.level}}</el-form-item>
             <el-form-item label="我的库存：">{{info.card}}</el-form-item>
-
             <el-form-item label="赠送数量：" >
                 <el-input v-model="num" type="number" placeholder='请输入赠送数量' :maxlength='20'></el-input>
             </el-form-item>
@@ -48,66 +44,56 @@
 </style>
 
 <script type="text/javascript">
-    import { mapGetters } from 'vuex'
-    import api from '@/api/index'
-
-    export default {
-        data() {
-            return {
-                searchKey:'',
-                num:0,
-                info:{}
+import { mapGetters } from 'vuex'
+import api from '@/api/index'
+export default {
+    data(){
+        return {
+            searchKey:'555',
+            num:0,
+            info:{}
+        }
+    },
+    computed:{
+        ...mapGetters({
+            'agentLevels':'agent/agentLevels'
+        }),
+    },
+    mounted()  {
+        this.init()
+    },
+    methods:{
+        async init(){
+            let key = this.searchKey?this.searchKey:this.$route.query.id
+            let res = await api.getDetail({type:'player',key:key})
+            if (res.code != 0) {
+                this.$alert(res.msg,"提示")
+                return
             }
+            this.info = res.player
         },
-        computed:{
-            ...mapGetters({
-                'agentLevels':'agent/agentLevels'
-            }),
+        cancelnow() {
+            this.$router.push({ path: '/agent/index' })
         },
-        mounted()  {
-            this.init()
-        },
-        methods:{
-            async init(){
-                let key = this.searchKey?this.searchKey:this.$route.query.id
-                let res = await api.childPlayer({'key':key})
-                if (res.ret != '0') {
-                    this.$alert(res.retinfo,"提示")
-                    return
+        onSubmit(formName) {
+            let self = this
+            this.$refs[formName].validate((valid) => {
+                if (valid) {
+                    let key = this.searchKey?this.searchKey:this.$route.query.id
+                    api.sendCard({type:'player',num:this.num,to:''}).then((res)=>{
+                        if (res.code != 0) {
+                            self.$alert(res.msg,"提示")
+                            return
+                        }
+                        self.$message("成功！")
+                    })
+                } else {
+                    console.log('error submit!!');
+                    return false;
                 }
-                this.info = {
-                    id:'11',
-                    uname:'42424',
-                    name:'3434',
-                    phone:'77',
-                    level:'3737',
-                    card:'27',
-                }
-            },
-            //取消
-            cancelnow() {
-                this.$router.push({ path: '/channel/employee' });
-            },
+            })
 
-            //确定
-            async onSubmit(formName) {
-                let self = this
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        // let res = await api.addEmployeeLogic(this.creatAgent)
-                        // if (res.ret != '0') {
-                        //     this.$alert(res.retinfo,"提示")
-                        //     return
-                        // }
-                        // this.$message("成功！")
-                        // self.$router.push({ path: '/channel/employee' });
-                    } else {
-                        console.log('error submit!!');
-                        return false;
-                    }
-                })
-
-            }
         }
     }
+}
 </script>

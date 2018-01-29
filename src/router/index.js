@@ -77,8 +77,9 @@ router.beforeEach((to, from, next) => {
         next()
     } else {
         const session = Util.getCookie('xh-session')
-        if(session) next()
-        else next({path: '/login'})
+        // if(session) next()
+        // else next({path: '/login'})
+        next()
     }
 })
 

@@ -106,10 +106,10 @@
                         const reqData = {
                             'user':{
                                 'uname': this.creatAgent.uname,
-                                'pwd': md5( String(this.creatAgent.pwd) ),
-                                'phone':this.creatAgent.phone,
                                 'name':this.creatAgent.name,
+                                'phone':this.creatAgent.phone,
                                 'level':this.creatAgent.level,
+                                'pwd': md5( String(this.creatAgent.pwd) ),
                                 'card':this.creatAgent.card
                             }
                         }

@@ -56,15 +56,14 @@ export default {
         this.init()
     },
     methods: {
-        init() {
-            // api.search_grant_record(this.search).then(res => {
-            //     if (res._ret != 0) {
-            //         this.$alert(res._errStr)
-            //         return
-            //     }
-            //     this.list = res.recordList
-            //     this.total = Number(res.pageInfo.total)
-            // })
+        async init(){
+            let res = await api.sendRecord({page:this.search.pageIndex , type:'agent'})
+            if (res.code != 0) {
+                this.$alert(res.msg,"提示")
+                return
+            }
+            this.dataList = res.list
+            this.total = res.total_page
         },
         handleCurrentChange(val) {
             this.currentPage = val

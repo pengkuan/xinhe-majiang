@@ -45,25 +45,15 @@ export default {
     },
     methods: {
         async init(){
-            // let res = await api.OperateData({})
-            // if (res.ret != '0') {
-            //     this.$alert(res.retinfo,"提示")
-            //     return
-            // }
-            this.dataList = [
-                {
-                    orderId:'5974165aee5',
-                    amount:'600',
-                    sendType:'类型1',
-                    sendId:'s123',
-                    sendAccount:'hongzhaji',
-                    acceptId:'a124',
-                    acceptAccount:'pengkuan',
-                    sendName:'xiaobai',
-                    sendTime:'2017-12-26 08:52:36',
-                }
-            ]
+            let res = await api.sendRecord({page:this.search.pageIndex , type:'player'})
+            if (res.code != 0) {
+                this.$alert(res.retinfo,"提示")
+                return
+            }
+            this.dataList = res.list
+            this.total = res.total_page
         },
+        
         handleCurrentChange(val) {
             this.currentPage = val
             this.search.pageIndex = String(val - 1)

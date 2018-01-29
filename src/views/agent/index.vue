@@ -53,7 +53,7 @@ export default {
             dataList: [],
             search: {
                 "txnId": "",
-                "pageIndex": "0",
+                "pageIndex": 0,
                 "pageSize": "10"
             },
             currentPage: 1,
@@ -65,23 +65,13 @@ export default {
     },
     methods: {
         async init(){
-            // let res = await api.getAgentList({page:this.search.pageIndex})
-            // if (res.ret != '0') {
-            //     this.$alert(res.retinfo,"提示")
-            //     return
-            // }
-            this.dataList = [{
-                id:'a2546',
-                uname:'pengzaza',
-                name:'pengzaza',
-                phone:'13410000000',
-                level:'二级',
-                parent:'pengdada',
-                children:'200',
-                player:'540',
-                card:'1200',
-            }]
-            this.total = 1
+            let res = await api.agentList({page:this.search.pageIndex})
+            if (res.ret != '0') {
+                this.$alert(res.msg,"提示")
+                return
+            }
+            this.dataList = res.list
+            this.total = res.total_page
         },
         handleCurrentChange(val) {
             this.currentPage = val

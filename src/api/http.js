@@ -55,20 +55,3 @@ export function fetchPost(apiPath,params) {
             })
     })
 }
-export function fetchGet(apiPath,params) {
-    var resParams = {    
-        'session': util.getCookie('xh-session') ? util.getCookie('xh-session'):''
-    }
-    merge(resParams,params)
-    return new Promise((resolve, reject) => {
-        axios.get(config.api+apiPath, resParams)
-            .then(response => {
-                resolve(response)
-            }, err => {
-                reject(err)
-            })
-            .catch((error) => {
-                reject(error)
-            })
-    })
-}

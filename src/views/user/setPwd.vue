@@ -37,6 +37,7 @@
 </style>
 
 <script type="text/javascript">
+    import md5 from 'js-md5'
     import { mapGetters } from 'vuex'
     import api from '@/api/index'
 
@@ -74,9 +75,15 @@
             		this.$alert('新密码与确认密码不一致')
             		return
             	}
-                api.modifyPwd(this.modifyPwd).then(res => {
-                    if (res.ret != '0') {
-                        this.$alert(res.retinfo,"提示")
+                let loginParams = { 
+                    'account': {
+                        oldpwd : md5(this.modifyPwd.originPwd),
+                        newpwd : md5(this.modifyPwd.newPwd)
+                    }
+                }
+                api.modifyPwd(loginParams).then(res => {
+                    if (res.code != 0) {
+                        this.$alert(res.msg,"提示")
                         return
                     }
                     this.$message("成功！")
