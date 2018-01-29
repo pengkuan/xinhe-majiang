@@ -2,7 +2,7 @@
     <div id = "rewardRecord">
         <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>代理列表</el-breadcrumb-item>
+            <el-breadcrumb-item>玩家列表</el-breadcrumb-item>
         </el-breadcrumb>
         <hr>
         <br>
@@ -54,7 +54,7 @@ export default {
             dataList: [],
             search: {
                 "txnId": "",
-                "pageIndex": "0",
+                "pageIndex": 0,
                 "pageSize": "10"
             },
             currentPage: 1,
@@ -77,7 +77,7 @@ export default {
         handleCurrentChange(val) {
             this.currentPage = val
             this.search.pageIndex = String(val - 1)
-            this.random_init()
+            this.init()
         },
         reset(formName){
             this.$refs[formName].resetFields()

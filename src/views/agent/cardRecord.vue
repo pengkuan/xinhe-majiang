@@ -44,7 +44,7 @@ export default {
             ],
             search: {
                 "txnId": "",
-                "pageIndex": "0",
+                "pageIndex": 0,
                 "pageSize": "10"
             },
             currentPage: 1,
@@ -57,7 +57,7 @@ export default {
     },
     methods: {
         async init(){
-            let res = await api.sendRecord({page:this.search.pageIndex , type:'agent'})
+            let res = await api.sendRecord({page:Number(this.search.pageIndex) , type:'agent'})
             if (res.code != 0) {
                 this.$alert(res.msg,"提示")
                 return
@@ -68,7 +68,7 @@ export default {
         handleCurrentChange(val) {
             this.currentPage = val
             this.search.pageIndex = String(val - 1)
-            this.random_init()
+            this.init()
         },
         reset(formName){
             this.$refs[formName].resetFields()

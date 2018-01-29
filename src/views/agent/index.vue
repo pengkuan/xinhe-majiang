@@ -66,7 +66,7 @@ export default {
     methods: {
         async init(){
             let res = await api.agentList({page:this.search.pageIndex})
-            if (res.ret != '0') {
+            if (res.code != '0') {
                 this.$alert(res.msg,"提示")
                 return
             }
@@ -76,7 +76,7 @@ export default {
         handleCurrentChange(val) {
             this.currentPage = val
             this.search.pageIndex = String(val - 1)
-            this.random_init()
+            this.init()
         },
         reset(formName){
             this.$refs[formName].resetFields()

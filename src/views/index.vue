@@ -87,11 +87,11 @@ export default {
     },
     methods: {
         async init(){
-            // let res = await api.OperateData({})
-            // if (res.ret != '0') {
-            //     this.$alert(res.retinfo,"提示")
-            //     return
-            // }
+            let res = await api.operateData({})
+            if (res.code != '0') {
+                this.$alert(res.msg,"提示")
+                return
+            }
             const list = [
                 {
                     date :'12/07',     // 日期

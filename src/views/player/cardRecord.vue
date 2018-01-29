@@ -32,7 +32,7 @@ export default {
             dataList: [],
             search: {
                 "txnId": "",
-                "pageIndex": "0",
+                "pageIndex": 0,
                 "pageSize": "10"
             },
             currentPage: 1,
@@ -57,7 +57,7 @@ export default {
         handleCurrentChange(val) {
             this.currentPage = val
             this.search.pageIndex = String(val - 1)
-            this.random_init()
+            this.init()
         },
         reset(formName){
             this.$refs[formName].resetFields()

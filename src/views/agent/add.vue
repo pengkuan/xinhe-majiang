@@ -115,7 +115,7 @@
                         }
                         api.addAgent(reqData).then(res =>{
                             if (res.code != '0') {
-                                this.$alert(res.retinfo,"提示")
+                                this.$alert(res.code,"提示")
                                 return
                             }
                             this.$message("成功！")
