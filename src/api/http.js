@@ -2,6 +2,7 @@ import axios from 'axios'
 import config from '@/config/index'
 import util from '@/util/index'
 import merge from '@/util/merge'
+import router from '@/router'
 // axios 配置
 // axios.defaults.timeout = 5000;
 axios.defaults.headers.post['Content-Type'] = 'application/json'
@@ -24,13 +25,17 @@ axios.interceptors.response.use((res) => {
     if (res.status != 200) {
         return Promise.reject(res)
     }
+    if(res.data.code == 40001){
+        router.push('/login')
+        return {code:0}
+    }
     return res.data
 }, (error) => {
     if (error.response) {
         Message({ message: error.response.data.msg, type: 'warning' })
         switch (error.response.status) {
             case 403:
-
+                router.push('/login')
         }
     }
     return Promise.reject(error)

@@ -50,7 +50,7 @@
 </style>
 
 <script type="text/javascript">
-    import { mapGetters } from 'vuex'
+    import { mapGetters ,mapMutations } from 'vuex'
     import md5 from 'js-md5'
     import api from '@/api/index'
 
@@ -58,11 +58,11 @@
         data() {
             return {
                 creatAgent:{
-                    uname:'pengkuan',
+                    uname:'ceshi001',
                     pwd:'123456',
-                    phone:'13410079888',
-                    name:'测试',
-                    level:1,
+                    phone:'13410079001',
+                    name:'测试001',
+                    level:'',
                     card:25,
                 },
                 rules:{
@@ -90,9 +90,12 @@
             }),
         },
         mounted()  {
-
+            this.setCanLevel()
         },
         methods:{
+            ...mapMutations({
+                setCanLevel: 'agent/SET_PRECHOOSE_LEVEL' // 将 `this.add()` 映射为 `this.$store.commit('increment')`
+            }),
             //取消
             cancelnow() {
                 this.$router.push({ path: '/channel/employee' });
@@ -115,11 +118,11 @@
                         }
                         api.addAgent(reqData).then(res =>{
                             if (res.code != '0') {
-                                this.$alert(res.code,"提示")
+                                this.$alert(res.msg,"提示")
                                 return
                             }
                             this.$message("成功！")
-                            self.$router.push({ path: '/index' });
+                            self.$router.push({ path: '/agent/index' });
                         })
                     } else {
                         console.log('error submit!!');

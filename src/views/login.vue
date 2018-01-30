@@ -76,10 +76,11 @@ export default {
                     api.Login(loginParams).then(res => {
                         this.logining = false
                         if (res.code != '0') {
-                            this.$layer.msg(res.msg)
+                            this.$message(res.msg)
                             return
                         }
                         self._Util.setCookie('xh-session',res.user.session)
+                        self._Util.setCookie('xh-level',res.user.level)
                         // self.$store.commit('userInfo/SET_SESSION',res.user.session)
                         self.$router.push({ path: '/' })
                     })

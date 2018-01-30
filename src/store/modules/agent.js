@@ -1,4 +1,5 @@
 import api from '@/api/index'
+import util from '@/util/index'
 import * as types from '../mutation-types'
 
 // initial state
@@ -24,8 +25,13 @@ const actions = {
 }
 
 // mutations
-const mutations = {
-
+const mutations = { //注意事项  退出登录时 需将此值还原！！
+    [types.SET_PRECHOOSE_LEVEL](state) {
+        let level = util.getCookie('xh-level')
+        let filterArr = state.agentLevels.filter(item=> item.id > level)
+        state.agentLevels = filterArr
+    },
+    
 }
 
 export default {

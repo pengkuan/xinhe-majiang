@@ -64,38 +64,25 @@
             this.init()
         },
         methods:{
+            
             async init(){
                 let key = this.searchKey?this.searchKey:this.$route.query.id
-                let res = await api.getDetail({type:'agent',key:key})
+                let res = await api.getDetail({type:'agent',key:String(key)})
                 if (res.code != 0) {
                     this.$alert(res.msg,"提示")
                     return
                 }
-                this.info = res.agent
+                this.info = res.list[0]
             },
-            //取消
-            cancelnow() {
-                this.$router.push({ path: '/channel/employee' });
-            },
-            //确定
-            onSubmit(formName) {
-                let self = this
-                this.$refs[formName].validate((valid) => {
-                    if (valid) {
-                        let key = this.searchKey?this.searchKey:this.$route.query.id
-                        api.sendCard({type:'agent',num:this.num,to:''}).then((res)=>{
-                            if (res.code != 0) {
-                                self.$alert(res.msg,"提示")
-                                return
-                            }
-                            self.$message("成功！")
-                        })
-                    } else {
-                        console.log('error submit!!');
-                        return false;
+            onSubmit() {
+                if(!this.num) this.$message('请输入赠送数量！')
+                api.sendCard( {type:'agent',num:Number(this.num),to:Number(this.$route.query.id)} ).then((res)=>{
+                    if (res.code != 0) {
+                        this.$alert(res.msg,"提示")
+                        return
                     }
+                    this.$message("成功！")
                 })
-
             }
         }
     }

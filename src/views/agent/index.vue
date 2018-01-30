@@ -8,12 +8,12 @@
         <br>
         <!-- 搜索start -->
         <el-form :inline="true" :model="search" ref="search" label-width="60px" size="small" class="demo-form-inline">
-            <el-form-item label="搜索：" prop="txnId">
-                <el-input v-model="search.txnId" placeholder="请输入关键字"></el-input>
+            <el-form-item label="搜索：" prop="key">
+                <el-input v-model="search.key" placeholder="请输入关键字"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="init">查询</el-button>
-                <el-button @click="reset('search')">重置</el-button>
+                <el-button :disabled="search.key?false:true" type="primary" @click="query">查询</el-button>
+                <el-button  @click="reset('search')">重置</el-button>
             </el-form-item>
         </el-form>
         <br>
@@ -52,7 +52,7 @@ export default {
         return {
             dataList: [],
             search: {
-                "txnId": "",
+                "key": "",
                 "pageIndex": 0,
                 "pageSize": "10"
             },
@@ -64,6 +64,15 @@ export default {
         this.init()
     },
     methods: {
+        async query(){
+            let res = await api.getDetail({type:'agent',key:String(this.search.key)})
+            if (res.code != 0) {
+                this.$alert(res.msg,"提示")
+                return
+            }
+            this.dataList = res.list
+            this.total = 1
+        },
         async init(){
             let res = await api.agentList({page:this.search.pageIndex})
             if (res.code != '0') {
@@ -71,7 +80,7 @@ export default {
                 return
             }
             this.dataList = res.list
-            this.total = res.total_page
+            this.total = res.total
         },
         handleCurrentChange(val) {
             this.currentPage = val

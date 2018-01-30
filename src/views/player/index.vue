@@ -18,9 +18,6 @@
         </el-form>
         <br>
         <!-- 搜索end -->
-        <div class="operate">
-            <el-button type="primary" @click="add" size="mini">新增</el-button>
-        </div>
         <el-table border :data="dataList" style="width: 100%,min-height:300px">
             <el-table-column prop="head" label="头像"></el-table-column>
             <el-table-column prop="gameId" label="游戏ID"></el-table-column>
@@ -82,11 +79,6 @@ export default {
         reset(formName){
             this.$refs[formName].resetFields()
             this.init()
-        },
-        add(){
-            this.$router.push({
-                name:'agentAdd',
-            })
         },
          //发卡
         sendCard(id){
