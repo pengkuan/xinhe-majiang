@@ -1,24 +1,21 @@
 <template>
-<div>
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/agent/index' }">代理列表</el-breadcrumb-item>
-        <el-breadcrumb-item>新增</el-breadcrumb-item>
-    </el-breadcrumb>
-    <hr>
-    <br>
+<div id="add-agent">
+    <xh-header label="代理列表 / 新增">
+        <router-link to="/agent/index"><el-button size="small">返回代理列表</el-button></router-link>
+    </xh-header>
     <div class="content-container">
         <el-form  :model="creatAgent" :rules="rules" ref="creatAgent" label-width="120px">
             <el-form-item label="账号：" prop='uname' >
-                <el-input v-model="creatAgent.uname" placeholder='请输入账号' :maxlength='20'></el-input>
+                <el-input v-model.trim="creatAgent.uname" placeholder='请输入账号'></el-input>
             </el-form-item>
             <el-form-item label="密码："  prop='pwd'>
-                <el-input v-model="creatAgent.pwd" type='pwd' placeholder='请输入密码' :maxlength='20'></el-input>
+                <el-input v-model.trim="creatAgent.pwd" type='pwd' placeholder='请输入密码'></el-input>
             </el-form-item>
             <el-form-item label="姓名："  prop='name'>
-                <el-input v-model="creatAgent.name" placeholder='请输入姓名' :maxlength='20'></el-input>
+                <el-input v-model.trim="creatAgent.name" placeholder='请输入姓名' :maxlength='20'></el-input>
             </el-form-item>
             <el-form-item label="手机号："  prop='phone'>
-                <el-input v-model="creatAgent.phone"  type="number" placeholder='请输入手机号' :maxlength='11'></el-input>
+                <el-input v-model.trim="creatAgent.phone"  type="number" placeholder='请输入手机号'></el-input>
             </el-form-item>
             <el-form-item label="级别：" prop='level'>
                 <el-select v-model="creatAgent.level" placeholder="请选择">
@@ -27,10 +24,10 @@
                 </el-select>
             </el-form-item>
             <el-form-item label="我的库存：" >
-                <el-button type="text">2555</el-button>
+                <el-button type="text">{{myCard}}</el-button>
             </el-form-item>
-            <el-form-item label="赠送数量：" prop='card'>
-                <el-input v-model="creatAgent.card" type="number" placeholder='请输入赠送数量' :maxlength='20'></el-input>
+            <el-form-item label="赠送数量：" >
+                <el-input v-model.trim="creatAgent.card" type="number" placeholder='请输入赠送数量' ></el-input>
             </el-form-item>
             <el-form-item>
                 <div class="operate">
@@ -50,7 +47,7 @@
 </style>
 
 <script type="text/javascript">
-    import { mapGetters ,mapMutations } from 'vuex'
+    import { mapGetters ,mapMutations , mapActions } from 'vuex'
     import md5 from 'js-md5'
     import api from '@/api/index'
 
@@ -58,43 +55,49 @@
         data() {
             return {
                 creatAgent:{
-                    uname:'ceshi001',
+                    uname:'ceshi006',
                     pwd:'123456',
-                    phone:'13410079001',
-                    name:'测试001',
+                    phone:'13410079006',
+                    name:'测试006',
                     level:'',
-                    card:25,
+                    card:1,
                 },
                 rules:{
-                    // uname: [
-                    //     {  required: true , validator: this._Util.validateName, trigger: 'blur' }
-                    // ],
-                    // pwd: [
-                    //     { required: true , validator: this._Util.validateTel, trigger: 'blur' }
-                    // ],
-                    // name:[
-                    //     { required: true , validator: this._Util.validatestrCardNum, trigger: 'blur' }
-                    // ],
-                    // level:[
-                    //     { required: true , validator: this._Util.validatestrEmail, trigger: 'blur' }
-                    // ],
-                    // card:[
-                    //     { required: true , validator: this._Util.validatestrEmail, trigger: 'blur' }
-                    // ]
+                    uname: [
+                        {  required: true , validator: this._Util.validateNoChinese, trigger: 'blur' }
+                    ],
+                    pwd: [
+                        { required: true , validator: this._Util.validatePwd, trigger: 'blur' }
+                    ],
+                    name:[
+                        { required: true ,message: '请输入姓名',trigger: 'blur' }
+                    ],
+                    phone:[
+                        { required: true , validator: this._Util.validateTel, trigger: 'blur' }
+                    ],
+                    level:[
+                        {  required: true, message: '请选择代理等级', trigger: 'change' }
+                    ]
+                    
                 }
             }
         },
         computed:{
             ...mapGetters({
                 'agentLevels':'agent/agentLevels',
+                'myCard':'agent/myCard',
             }),
         },
         mounted()  {
             this.setCanLevel()
+            this.getMyCard()
         },
         methods:{
             ...mapMutations({
                 setCanLevel: 'agent/SET_PRECHOOSE_LEVEL' // 将 `this.add()` 映射为 `this.$store.commit('increment')`
+            }),
+            ...mapActions({
+                getMyCard: 'agent/getMyCard' // 将 `this.add()` 映射为 `this.$store.commit('increment')`
             }),
             //取消
             cancelnow() {
@@ -103,9 +106,12 @@
 
             //确定
             onSubmit(formName) {
-                let self = this
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        let loading = this.$loading({
+                            text:'正在提交',
+                            target:'#add-agent'
+                        })
                         const reqData = {
                             'user':{
                                 'uname': this.creatAgent.uname,
@@ -121,11 +127,12 @@
                                 this.$alert(res.msg,"提示")
                                 return
                             }
+                            loading.close()
                             this.$message("成功！")
-                            self.$router.push({ path: '/agent/index' });
+                            this.$router.push({ path: '/agent/index' })
                         })
                     } else {
-                        console.log('error submit!!');
+                        console.log('error submit!!')
                         return false;
                     }
                 })

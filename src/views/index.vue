@@ -62,10 +62,16 @@ export default {
             },
             series:{
                 type: 'bar',
+                // barWidth:'20%',
                 label: {
                     normal: {
                         show: true,
                         position: 'top'
+                    }
+                },
+                itemStyle:{
+                    normal:{
+                        color:'#0099FF'
                     }
                 }
             },
@@ -87,56 +93,58 @@ export default {
     },
     methods: {
         async init(){
+            // return
             let res = await api.operateData({})
             if (res.code != '0') {
                 this.$alert(res.msg,"提示")
                 return
             }
-            const list = [
-                {
-                    date :'12/07',     // 日期
-                    card :'28' ,    // 房卡消耗
-                    online :'150'  , // 最高在线
-                    user:'21' ,    // 新增用户
-                    login: '224'    // 登陆用户 
-                },{
-                    date :'12/08',     // 日期
-                    card :'28' ,    // 房卡消耗
-                    online :'150'  , // 最高在线
-                    user:'30' ,    // 新增用户
-                    login: '324'    // 登陆用户 
-                },{
-                    date :'12/09',     // 日期
-                    card :'8' ,    // 房卡消耗
-                    online :'250'  , // 最高在线
-                    user:'30' ,    // 新增用户
-                    login: '86'    // 登陆用户 
-                },{
-                    date :'12/10',     // 日期
-                    card :'28' ,    // 房卡消耗
-                    online :'150'  , // 最高在线
-                    user:'30' ,    // 新增用户
-                    login: '124'    // 登陆用户 
-                },{
-                    date :'12/11',     // 日期
-                    card :'28' ,    // 房卡消耗
-                    online :'90'  , // 最高在线
-                    user:'30' ,    // 新增用户
-                    login: '84'    // 登陆用户 
-                },{
-                    date :'12/12',     // 日期
-                    card :'21' ,    // 房卡消耗
-                    online :'115'  , // 最高在线
-                    user:'30' ,    // 新增用户
-                    login: '34'    // 登陆用户 
-                },{
-                    date :'12/13',     // 日期
-                    card :'28' ,    // 房卡消耗
-                    online :'150'  , // 最高在线
-                    user:'30' ,    // 新增用户
-                    login: '324'    // 登陆用户 
-                },
-            ]
+            const list = res.list
+            // const list = [
+            //     {
+            //         date :'12/07',     // 日期
+            //         card :'28' ,    // 房卡消耗
+            //         online :'150'  , // 最高在线
+            //         user:'21' ,    // 新增用户
+            //         login: '224'    // 登陆用户 
+            //     },{
+            //         date :'12/08',     // 日期
+            //         card :'28' ,    // 房卡消耗
+            //         online :'150'  , // 最高在线
+            //         user:'30' ,    // 新增用户
+            //         login: '324'    // 登陆用户 
+            //     },{
+            //         date :'12/09',     // 日期
+            //         card :'8' ,    // 房卡消耗
+            //         online :'250'  , // 最高在线
+            //         user:'30' ,    // 新增用户
+            //         login: '86'    // 登陆用户 
+            //     },{
+            //         date :'12/10',     // 日期
+            //         card :'28' ,    // 房卡消耗
+            //         online :'150'  , // 最高在线
+            //         user:'30' ,    // 新增用户
+            //         login: '124'    // 登陆用户 
+            //     },{
+            //         date :'12/11',     // 日期
+            //         card :'28' ,    // 房卡消耗
+            //         online :'90'  , // 最高在线
+            //         user:'30' ,    // 新增用户
+            //         login: '84'    // 登陆用户 
+            //     },{
+            //         date :'12/12',     // 日期
+            //         card :'21' ,    // 房卡消耗
+            //         online :'115'  , // 最高在线
+            //         user:'30' ,    // 新增用户
+            //         login: '34'    // 登陆用户 
+            //     },{
+            //         date :'12/13',     // 日期
+            //         card :'28' ,    // 房卡消耗
+            //         online :'150'  , // 最高在线
+            //         user:'30' ,    // 新增用户
+            //         login: '324'    // 登陆用户 
+            //     },
+            // ]
             list.forEach(item=>{
                 this.xAxis.data.push(item.date)
                 this.useCard.push(item.card)
@@ -162,9 +170,9 @@ export default {
                 xAxis: this.xAxis,
                 yAxis: this.yAxis,
                 series: [
-                    merge({},this.series,{name:'进卡',data:[483, 834, 290, 104, 131, 1635]}),
-                    merge({},this.series,{name:'代理',data:[383, 834, 290, 104, 131, 1635]}),
-                    merge({},this.series,{name:'玩家',data:[283, 834, 290, 104, 131, 1635]})
+                    merge({},this.series,{name:'进卡',data:[48, 14, 9, 14, 11, 35]}),
+                    merge({},this.series,{name:'代理',data:[33, 34, 19, 30, 31, 15],itemStyle:{normal:{color:'#33CC66'}}}),
+                    merge({},this.series,{name:'玩家',data:[23, 44, 20, 4, 31, 65],itemStyle:{normal:{color:'#242424'}}})
                 ]
             })
         },
@@ -181,7 +189,7 @@ export default {
                 xAxis: this.xAxis,
                 yAxis: this.yAxis,
                 series: [
-                    merge({},this.series,{barWidth:'50%',data:this.newAddUser})
+                    merge({},this.series,{barWidth:'50%',data:this.newAddUser,itemStyle:{normal:{color:'#FF9933'}}})
                 ]
             })
         },
@@ -199,7 +207,7 @@ export default {
                 yAxis: this.xAxis,
                 series: [
                     merge({},this.series,{name:'房卡消耗',data:this.useCard,label:{normal:{position:'right',show:true}}}),
-                    merge({},this.series,{name:'当天登录',data:this.loginUser,label:{normal:{position:'right',show:true}}})
+                    merge({},this.series,{name:'当天登录',data:this.loginUser,label:{normal:{position:'right',show:true}},itemStyle:{normal:{color:'#33CC66'}}})
                 ]
             })
         },
@@ -216,7 +224,7 @@ export default {
                 xAxis: this.xAxis,
                 yAxis: this.yAxis,
                 series: [
-                    merge({},this.series,{barWidth:'50%',data:this.mostOnline})
+                    merge({},this.series,{barWidth:'50%',data:this.mostOnline,itemStyle:{normal:{color:'#FF3300'}}})
                 ]
             })
         },

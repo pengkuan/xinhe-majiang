@@ -1,11 +1,8 @@
 <template>
     <div id = "rewardRecord">
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>代理列表</el-breadcrumb-item>
-        </el-breadcrumb>
-        <hr>
-        <br>
+        <xh-header label="代理列表 ">
+            <el-button type="primary" @click="add" size="mini" >新增</el-button>
+        </xh-header>
         <!-- 搜索start -->
         <el-form :inline="true" :model="search" ref="search" label-width="60px" size="small" class="demo-form-inline">
             <el-form-item label="搜索：" prop="key">
@@ -18,9 +15,6 @@
         </el-form>
         <br>
         <!-- 搜索end -->
-        <div class="operate">
-            <el-button type="primary" @click="add" size="mini">新增</el-button>
-        </div>
         <el-table border :data="dataList" style="width: 100%,min-height:300px">
             <el-table-column prop="id" label="代理ID"></el-table-column>
             <el-table-column prop="uname" label="代理账号"></el-table-column>
@@ -92,13 +86,16 @@ export default {
             this.init()
         },
         add(){
+            if(this._Util.getCookie('xh-level') =='4'){
+                this.$message('4级代理暂不支持添加下级！')
+                return
+            }
             this.$router.push({
                 name:'agentAdd',
             })
         },
           //发卡
         sendCard(id){
-            console.log(id)
             this.$router.push({
                 name:'agentCard',
                 query:{id:id}

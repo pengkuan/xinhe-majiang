@@ -1,11 +1,6 @@
 <template>
     <div id = "rewardRecord">
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item>玩家列表</el-breadcrumb-item>
-        </el-breadcrumb>
-        <hr>
-        <br>
+        <xh-header label="首页 / 玩家列表"></xh-header>
         <!-- 搜索start -->
         <el-form :inline="true" :model="search" ref="search" label-width="60px" size="small" class="demo-form-inline">
             <el-form-item label="搜索：" prop="txnId">
@@ -20,21 +15,19 @@
         <!-- 搜索end -->
         <el-table border :data="dataList" style="width: 100%,min-height:300px">
             <el-table-column prop="head" label="头像"></el-table-column>
-            <el-table-column prop="gameId" label="游戏ID"></el-table-column>
-            <el-table-column prop="bindAgent" label="绑定代理"></el-table-column>
+            <el-table-column prop="id" label="游戏ID"></el-table-column>
+            <el-table-column prop="number" label="绑定代理"></el-table-column>
             <el-table-column prop="restCard" label="剩余房卡"></el-table-column>
-            <el-table-column prop="registTime" label="注册时间"></el-table-column>
+            <el-table-column prop="time" label="注册时间"></el-table-column>
             <el-table-column prop="lastLoginTime" label="最后登录时间"></el-table-column>
             <el-table-column prop="lastLoginIp" label="最后登录IP"></el-table-column>
             <el-table-column prop="loginTime" label="登录次数"></el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
-                    <el-button class='indexFunBtn' type="primary" @click="sendCard(scope.row.gameId)" size="small">发卡</el-button>
-                    <el-button class='indexFunBtn' type="primary" @click="disabled(scope.row.gameId)" size="small">封号</el-button>
-                   
+                    <el-button class='indexFunBtn' type="primary" @click="sendCard(scope.row.id)" size="small">发卡</el-button>
+                    <el-button class='indexFunBtn' type="primary" @click="disabled(scope.row.id)" size="small">封号</el-button>
                 </template>
             </el-table-column>
-            
         </el-table>
         <div class="hjx-pagination">
             <el-pagination @current-change="handleCurrentChange" :current-page="currentPage" layout="total, prev, pager, next, jumper" :total="total">
@@ -69,7 +62,7 @@ export default {
                 return
             }
             this.dataList = res.list
-            this.total = res.total_page
+            this.total = res.total
         },
         handleCurrentChange(val) {
             this.currentPage = val

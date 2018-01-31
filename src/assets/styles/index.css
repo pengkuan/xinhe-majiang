@@ -60,9 +60,7 @@ input[type="number"]{-moz-appearance:textfield;}
 .show-detail-box .el-message-box__content{max-height: 400px;overflow: auto;} 
 .search-width{width: 200px}  
 
-
-/*ad*/
+.xh-header .el-button--small{padding:7px 9px;}
 .el-pagination{text-align: right;margin: 15px 0} 
-.el-form .el-form-item { margin-bottom: 15px;} 
 .tool{text-align: right;margin-bottom: 10px;}
 .title{border-bottom: 1px solid #efefef;height: 40px ;line-height: 40px;margin-bottom: 15px;font-size: 14px;color: #97a8be;font-weight: bold;}

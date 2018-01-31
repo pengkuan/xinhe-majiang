@@ -1,10 +1,6 @@
 <template>
     <div id = "rewardRecord">
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item>代理发卡记录</el-breadcrumb-item>
-        </el-breadcrumb>
-        <hr>
-        <br>
+        <xh-header label="代理发卡记录"></xh-header>
         <el-table border :data="dataList" style="width: 100%,min-height:300px">
             <el-table-column prop="orderId" label="订单号"></el-table-column>
             <el-table-column prop="amount" label="数量"></el-table-column>
@@ -29,26 +25,14 @@ import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
-            dataList: [
-                {
-                    orderId:'5974165aee5',
-                    amount:'600',
-                    sendType:'类型1',
-                    sendId:'s123',
-                    sendAccount:'hongzhaji',
-                    acceptId:'a124',
-                    acceptAccount:'pengkuan',
-                    sendName:'xiaobai',
-                    sendTime:'2017-12-26 08:52:36',
-                }
-            ],
+            dataList: [],
             search: {
                 "txnId": "",
                 "pageIndex": 0,
                 "pageSize": "10"
             },
             currentPage: 1,
-            total: 1
+            total: 0
 
         }
     },
@@ -63,9 +47,10 @@ export default {
                 return
             }
             this.dataList = res.list
-            this.total = res.total_page
+            this.total = res.total
         },
         handleCurrentChange(val) {
+            console.log(77777)
             this.currentPage = val
             this.search.pageIndex = String(val - 1)
             this.init()

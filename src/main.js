@@ -9,11 +9,14 @@ import '@/assets/fonts/iconfont.css'
 import store from './store/index'
 import Util from '@/util/index'
 import Config from '@/config/index.js'
+import xhHeader from '@/base/xh_header'
 
 Vue.config.productionTip = false
 Vue.prototype._Util = Util
 Vue.prototype._Config = Config
 Vue.use(ElementUI)
+Vue.component('xhHeader',xhHeader)
+
 /* eslint-disable no-new */
 new Vue({
     el: '#app',

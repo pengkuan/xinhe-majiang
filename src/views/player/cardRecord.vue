@@ -1,10 +1,6 @@
 <template>
     <div id = "rewardRecord">
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-            <el-breadcrumb-item>玩家发卡记录</el-breadcrumb-item>
-        </el-breadcrumb>
-        <hr>
-        <br>
+        <xh-header label="玩家发卡记录"></xh-header>
         <el-table border :data="dataList" style="width: 100%,min-height:300px">
             <el-table-column prop="orderId" label="订单号"></el-table-column>
             <el-table-column prop="amount" label="数量"></el-table-column>
@@ -36,7 +32,7 @@ export default {
                 "pageSize": "10"
             },
             currentPage: 1,
-            total: 1
+            total: 0
 
         }
     },
@@ -51,9 +47,8 @@ export default {
                 return
             }
             this.dataList = res.list
-            this.total = res.total_page
+            this.total = res.total
         },
-        
         handleCurrentChange(val) {
             this.currentPage = val
             this.search.pageIndex = String(val - 1)
@@ -62,12 +57,7 @@ export default {
         reset(formName){
             this.$refs[formName].resetFields()
             this.init()
-        },
-        add(){
-            this.$router.push({
-                name:'agentAdd',
-            })
-        },
+        }
     }
 
 }

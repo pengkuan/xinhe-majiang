@@ -47,12 +47,6 @@ export default {
         let str = arr.join('')
         return String(parseInt(str,2))
     },
-    removeClass(obj, cls) {
-        if (cls) {
-            var reg = new RegExp('(\\s|^)' + cls + '(\\s|$)')
-            obj.className = obj.className.replace(reg, ' ')
-        }
-    },
     setCookie(name, value) {
         var Days = 30
         var exp = new Date()
@@ -72,56 +66,6 @@ export default {
         var cval = this.getCookie(name)
         if (cval != null)
             document.cookie = name + "=" + cval + ";expires=" + exp.toGMTString()
-    },
-    // 设置本地储存
-    Set_lsdata(key, value) {
-        if (key != "") {
-            if (value) {
-                var lsobj = window.localStorage
-                var datajson = JSON.stringify(value)
-                lsobj.setItem(key, datajson)
-            }
-        }
-    },
-    Get_lsdata(key) {
-        if (key != "") {
-            var data = null
-            var lsdata = window.localStorage
-            try {
-                var datajson = lsdata.getItem(key)
-                datajson = JSON.parse(datajson)
-                data = datajson
-            } catch (e) {
-
-            } finally {
-                return data
-            }
-        }
-    },
-    // 设置本地储存
-    Set_lsdata(key, value) {
-        if (key != "") {
-            if (value) {
-                var lsobj = window.localStorage
-                var datajson = JSON.stringify(value)
-                lsobj.setItem(key, datajson)
-            }
-        }
-    },
-    Get_lsdata(key) {
-        if (key != "") {
-            var value = null
-            var lsdata = window.localStorage
-            try {
-                var datajson = lsdata.getItem(key)
-                datajson = JSON.parse(datajson)
-                value = datajson
-            } catch (e) {
-
-            } finally {
-                return value
-            }
-        }
     },
     //数组去重
     unique(list) {
@@ -176,16 +120,6 @@ export default {
         }
     },
 
-    // 提交数据验证
-    Validate: function(list) {
-        for (var index in list) {
-            if (!list[index].val) {
-                Message({ message: list[index].msg, type: 'warning' })
-                return false
-            }
-        }
-        return true
-    },
     //邮箱验证
     validatestrEmail: (rule, value, callback) => {
         if (!/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/g.test(value)) {
@@ -197,6 +131,21 @@ export default {
     validateTel: (rule, value, callback) => {
         if (!/^1[3|4|5|7|8]\d{9}$/g.test(value)) {
             callback(new Error('请输入正确手机号'))
+        }
+        callback()
+    },
+    //不包含中文
+    validateNoChinese: (rule, value, callback) => {
+        if (!/^[^\u4e00-\u9fa5]{6,20}$/g.test(value)) {
+            callback(new Error('请输入6~20位账号（不包含中文）'))
+        }
+        callback()
+    },
+    //密码长度
+    validatePwd: (rule, value, callback) => {
+        const len = value.length
+        if ( !/^\w{6,18}$/g.test(value) ) {
+            callback(new Error('请输入6~18位密码（支持数字、字母和下划线）'))
         }
         callback()
     },
@@ -213,16 +162,6 @@ export default {
         }
         callback()
     },
-    validateName1: (rule, value, callback) => {
-        value = Trim(value)
-        let len = value.gblen()
-        if (len < 1 || len > 40) {
-            callback(new Error('请输入40个以内字符'))
-        } else if (checkSpecialWord(value)) {
-            callback(new Error('不能包含特殊字符'))
-        }
-        callback()
-    },
     //身份证验证
     validatestrCardNum: (rule, value, callback) => {
         value = Trim(value)
@@ -231,29 +170,7 @@ export default {
         }
         callback()
     },
-    //描述验证
-    validateDesc: (rule, value, callback) => {
-        value = Trim(value)
-        let len = value.gblen()
-        if (len < 1 || len > 100) {
-            callback(new Error('请输入100个以内字符'))
-        }
-        callback()
-    },
-    //银行卡号验证
-    validateAccountNum: (rule, value, callback) => {
-        if (!/(^\d{10,30}$)/g.test(value)) {
-            callback(new Error('请输入10~30位银行卡号'))
-        }
-        callback()
-    },
-    //营业执照验证
-    validateLicenseNum: (rule, value, callback) => {
-        if (!/^(([0-9a-zA-Z]{15})|([0-9a-zA-Z]{18}))$/g.test(value)) {
-            callback(new Error('请输入15或18位营业执照号（字母或数字）'))
-        }
-        callback()
-    },
+    
     //输入详细地址验证
     validateAddr: (rule, value, callback) => {
         let len = value.gblen()

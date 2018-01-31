@@ -1,14 +1,14 @@
 <template>
     <el-form ref="AccountFrom" :model="account" :rules="rules" label-position="left" label-width="0px"
              class="demo-ruleForm login-container">
-        <h3 class="title">换机侠运营后台</h3>
+        <h3 class="title">新河麻将管理后台</h3>
         <el-form-item prop="uname">
             <el-input type="text" v-model="account.uname" @keyup.13.native="enter($event)" auto-complete="off" placeholder="账号"></el-input>
         </el-form-item>
         <el-form-item prop="pwd">
             <el-input type="password" v-model="account.pwd" @keyup.13.native="enter($event)" auto-complete="off" placeholder="密码"></el-input>
         </el-form-item>
-        <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox>
+        <!-- <el-checkbox v-model="checked" checked class="remember">记住密码</el-checkbox> -->
         <el-form-item style="width:100%;">
             <el-button type="primary" style="width:100%;" @click.native.prevent="handleLogin" :loading="logining">登录</el-button>
         </el-form-item>
@@ -62,7 +62,7 @@ export default {
             this.handleLogin()
         },
         handleLogin() {
-            let self = this
+            // let self = this
             this.$refs.AccountFrom.validate((valid) => {
                 if (valid) {
                     this.logining = true
@@ -79,27 +79,16 @@ export default {
                             this.$message(res.msg)
                             return
                         }
-                        self._Util.setCookie('xh-session',res.user.session)
-                        self._Util.setCookie('xh-level',res.user.level)
-                        // self.$store.commit('userInfo/SET_SESSION',res.user.session)
-                        self.$router.push({ path: '/' })
+                        this._Util.setCookie('xh-session',res.user.session)
+                        this._Util.setCookie('xh-level',res.user.level)
+                        this._Util.setCookie('xh-uname',res.user.uname)
+                        this._Util.setCookie('xh-id',res.user.id)
+                        this.$router.push({ path: '/' })
                     })
-                    /******** 本地调试 ********/
-                    // if(this.account.uname != this.loginInfo.account ){
-                    //     this.$message({message:'登录账号错误！',type:'error'})
-                    // }else if(this.account.pwd != this.loginInfo.pwd ){
-                    //     this.$message({message:'登录密码错误！',type:'error'})
-                    // }else{
-                    //     this.$router.push({ path: '/' })
-                    // }
-                    
                 } else {
                     console.log('error submit!!')
                     return false
                 }
-
-
-                
             })
         }
     }

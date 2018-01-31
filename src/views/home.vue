@@ -6,6 +6,14 @@
                 <div class="topbar-logo topbar-btn">
                     <a href="/" style="margin: 10px 0 0 10px;height:30px;border:0;color:#fff">测试</a>
                 </div>
+                <div class="topbar-account">
+                    <el-dropdown trigger="click">
+                        <span class="el-dropdown-link userinfo-inner"><i class="iconfont icon-people"></i>&nbsp;&nbsp;{{sysUserName}}&nbsp;&nbsp;<i class="iconfont icon-down"></i></span>
+                        <el-dropdown-menu slot="dropdown"> 
+                            <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </div>
             </el-col>
             <!--中间-->
             <el-col :span="24" class="main">
@@ -68,6 +76,7 @@ import { mapMutations } from 'vuex'
 export default {
     data() {
         return {
+            sysUserName:'ceshi',
             collapsed: false, 
             menuList: [],
         }
@@ -82,10 +91,18 @@ export default {
         },
         showMenu(i, status) {
         },
+        logout() {
+            this.$confirm('确认退出吗?', '提示', {
+                type: 'warning'
+            }).then(() => {
+                this._Util.delCookie('xh-session')
+                this.$router.push({ path: '/login' })
+            })
+        }
     },
-    mounted() {},
     created() {
         this.menuList = this.$router.options.routes
+        this.sysUserName = this._Util.getCookie('xh-uname') || ''
     }
 }
 

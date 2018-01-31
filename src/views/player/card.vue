@@ -1,11 +1,8 @@
 <template>
 <div>
-    <el-breadcrumb separator-class="el-icon-arrow-right">
-        <el-breadcrumb-item :to="{ path: '/agent/index' }">玩家列表</el-breadcrumb-item>
-        <el-breadcrumb-item>发卡</el-breadcrumb-item>
-    </el-breadcrumb>
-    <hr>
-    <br>
+    <xh-header label="玩家列表 / 发卡">
+        <router-link to="/player/index"><el-button size="small">返回玩家列表</el-button></router-link>
+    </xh-header>
     <div class="content-container">
         <!-- 搜索start -->
         <el-form :inline="true" label-width="120px">
@@ -17,19 +14,19 @@
             </el-form-item>
         </el-form>
         <el-form label-width="120px">
-            <el-form-item label="代理ID：">{{info.id}}</el-form-item>
-            <el-form-item label="代理账号：">{{info.uname}}</el-form-item>
-            <el-form-item label="代理手机号：">{{info.phone}}</el-form-item>
-            <el-form-item label="代理姓名：">{{info.name}}</el-form-item>
-            <el-form-item label="代理级别：">{{info.level}}</el-form-item>
-            <el-form-item label="我的库存：">{{info.card}}</el-form-item>
+            <el-form-item label="玩家ID：">{{info.id}}</el-form-item>
+            <el-form-item label="玩家昵称：">{{info.nick}}</el-form-item>
+            <el-form-item label="创建时间：">{{info.phone}}</el-form-item>
+            <el-form-item label="剩余卡数：">{{info.card}}</el-form-item>
+            <el-form-item label="玩家状态：">{{info.level}}</el-form-item>
+            <el-form-item label="我的库存：">{{myCard}}</el-form-item>
             <el-form-item label="赠送数量：" >
                 <el-input v-model="num" type="number" placeholder='请输入赠送数量' :maxlength='20'></el-input>
             </el-form-item>
             <el-form-item>
                 <div class="operate">
                     <el-button @click="onSubmit" type="primary" >发卡</el-button>
-                    <router-link to="index"><el-button >取消</el-button></router-link>
+                    <router-link to="/player/index"><el-button >取消</el-button></router-link>
                 </div>
             </el-form-item>
         </el-form>
@@ -44,56 +41,60 @@
 </style>
 
 <script type="text/javascript">
-import { mapGetters } from 'vuex'
-import api from '@/api/index'
-export default {
-    data(){
-        return {
-            searchKey:'555',
-            num:0,
-            info:{}
-        }
-    },
-    computed:{
-        ...mapGetters({
-            'agentLevels':'agent/agentLevels'
-        }),
-    },
-    mounted()  {
-        this.init()
-    },
-    methods:{
-        async init(){
-            let key = this.searchKey?this.searchKey:this.$route.query.id
-            let res = await api.getDetail({type:'player',key:key})
-            if (res.code != 0) {
-                this.$alert(res.msg,"提示")
-                return
-            }
-            this.info = res.player
-        },
-        cancelnow() {
-            this.$router.push({ path: '/agent/index' })
-        },
-        onSubmit(formName) {
-            let self = this
-            this.$refs[formName].validate((valid) => {
-                if (valid) {
-                    let key = this.searchKey?this.searchKey:this.$route.query.id
-                    api.sendCard({type:'player',num:this.num,to:''}).then((res)=>{
-                        if (res.code != 0) {
-                            self.$alert(res.msg,"提示")
-                            return
-                        }
-                        self.$message("成功！")
-                    })
-                } else {
-                    console.log('error submit!!');
-                    return false;
-                }
-            })
+    import { mapGetters,mapActions } from 'vuex'
+    import api from '@/api/index'
 
+    export default {
+        data() {
+            return {
+                searchKey:'',
+                num:'',
+                info:{}
+            }
+        },
+        computed:{
+            ...mapGetters({
+                'agentLevels':'agent/agentLevels',
+                'myCard':'agent/myCard'
+            }),
+            key(){
+                return this.searchKey?this.searchKey:this.$route.query.id
+            }
+        },
+        mounted()  {
+            this.init()
+            this.getMyCard()
+        },
+        methods:{
+            ...mapActions({
+                getMyCard: 'agent/getMyCard' 
+            }),
+            async init(){
+                let res = await api.getDetail({type:'player',key:String(this.key)})
+                if (res.code != 0) {
+                    this.$alert(res.msg,"提示")
+                    return
+                }
+                this.info = res.list[0]
+            },
+            onSubmit() {
+                if(!this.num) {
+                    this.$message('请输入赠送数量！')
+                    return
+                }
+                if(this.num > this.myCard) {
+                    this.$message('库存不足，无法赠送！')
+                    return
+                }
+                api.sendCard( {type:'agent',num:Number(this.num),to:this.info.id} ).then((res)=>{
+                    if (res.code != 0) {
+                        this.$alert(res.msg,"提示")
+                        return
+                    }
+                    this.$message("成功！")
+                    this.$router.push({ path: '/agent/index' })
+                })
+            }
         }
     }
-}
 </script>
