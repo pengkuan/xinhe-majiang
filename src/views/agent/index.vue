@@ -47,7 +47,7 @@ export default {
             dataList: [],
             search: {
                 "key": "",
-                "pageIndex": 0,
+                "pageIndex": 1,
                 "pageSize": "10"
             },
             currentPage: 1,
@@ -78,7 +78,7 @@ export default {
         },
         handleCurrentChange(val) {
             this.currentPage = val
-            this.search.pageIndex = String(val - 1)
+            this.search.pageIndex = val
             this.init()
         },
         reset(formName){

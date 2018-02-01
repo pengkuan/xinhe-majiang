@@ -1,22 +1,26 @@
 <template>
     <div>
-        <el-row>
-            <el-col :span="12">
-                <div id="bar1" style="width: 600px;height: 400px;"></div>
-            </el-col>
-            <el-col :span="12">
-                <div id="bar2" style="width: 600px;height: 400px;"></div>
-            </el-col>
-        </el-row> 
-        <br><br>
-        <el-row>
-            <el-col :span="12">
-                <div id="bar3" style="width: 600px;height: 400px;"></div>
-            </el-col>
-            <el-col :span="12">
-                <div id="bar4" style="width: 600px;height: 400px;"></div>
-            </el-col>
-        </el-row> 
+        <xh-header label="运营数据"></xh-header>
+        <div v-if="isHighest">
+            <el-row>
+                <el-col :span="12">
+                    <div id="bar1" style="width: 600px;height: 400px;"></div>
+                </el-col>
+                <el-col :span="12">
+                    <div id="bar2" style="width: 600px;height: 400px;"></div>
+                </el-col>
+            </el-row> 
+            <br><br>
+            <el-row>
+                <el-col :span="12">
+                    <div id="bar3" style="width: 600px;height: 400px;"></div>
+                </el-col>
+                <el-col :span="12">
+                    <div id="bar4" style="width: 600px;height: 400px;"></div>
+                </el-col>
+            </el-row> 
+        </div>
+        <div else>暂只支持总代查看运营数据</div>
         
     </div>
 </template>
@@ -28,6 +32,10 @@ export default {
     name: '',
     data() {
         return {
+            isHighest:this._Util.getCookie('xh-level') == '0',
+            getCard:[],//进卡
+            agentBuyCard:[],//代理购卡
+            playerBuyCard:[],//玩家购卡
             useCard:[],//房卡消耗
             mostOnline:[],//最高在线
             newAddUser:[],//新增用户
@@ -41,7 +49,7 @@ export default {
             },
             grid:{
                 left: '3%',
-                right: '15%',
+                right: '18%',
                 bottom: '3%',
                 containLabel: true
             },
@@ -93,60 +101,18 @@ export default {
     },
     methods: {
         async init(){
-            // return
+            if(!this.isHighest) return
             let res = await api.operateData({})
             if (res.code != '0') {
                 this.$alert(res.msg,"提示")
                 return
             }
             const list = res.list
-            // const list = [
-            //     {
-            //         date :'12/07',     // 日期
-            //         card :'28' ,    // 房卡消耗
-            //         online :'150'  , // 最高在线
-            //         user:'21' ,    // 新增用户
-            //         login: '224'    // 登陆用户 
-            //     },{
-            //         date :'12/08',     // 日期
-            //         card :'28' ,    // 房卡消耗
-            //         online :'150'  , // 最高在线
-            //         user:'30' ,    // 新增用户
-            //         login: '324'    // 登陆用户 
-            //     },{
-            //         date :'12/09',     // 日期
-            //         card :'8' ,    // 房卡消耗
-            //         online :'250'  , // 最高在线
-            //         user:'30' ,    // 新增用户
-            //         login: '86'    // 登陆用户 
-            //     },{
-            //         date :'12/10',     // 日期
-            //         card :'28' ,    // 房卡消耗
-            //         online :'150'  , // 最高在线
-            //         user:'30' ,    // 新增用户
-            //         login: '124'    // 登陆用户 
-            //     },{
-            //         date :'12/11',     // 日期
-            //         card :'28' ,    // 房卡消耗
-            //         online :'90'  , // 最高在线
-            //         user:'30' ,    // 新增用户
-            //         login: '84'    // 登陆用户 
-            //     },{
-            //         date :'12/12',     // 日期
-            //         card :'21' ,    // 房卡消耗
-            //         online :'115'  , // 最高在线
-            //         user:'30' ,    // 新增用户
-            //         login: '34'    // 登陆用户 
-            //     },{
-            //         date :'12/13',     // 日期
-            //         card :'28' ,    // 房卡消耗
-            //         online :'150'  , // 最高在线
-            //         user:'30' ,    // 新增用户
-            //         login: '324'    // 登陆用户 
-            //     },
-            // ]
             list.forEach(item=>{
-                this.xAxis.data.push(item.date)
+                this.xAxis.data.push(item.date.slice(4,6)+'/'+item.date.slice(6,8))
+                this.getCard.push(item.agent.s2a_card)
+                this.agentBuyCard.push(item.agent.a2a_card)
+                this.playerBuyCard.push(item.agent.a2u_card)
                 this.useCard.push(item.card)
                 this.mostOnline.push(item.online)
                 this.newAddUser.push(item.user)
@@ -170,9 +136,9 @@ export default {
                 xAxis: this.xAxis,
                 yAxis: this.yAxis,
                 series: [
-                    merge({},this.series,{name:'进卡',data:[48, 14, 9, 14, 11, 35]}),
-                    merge({},this.series,{name:'代理',data:[33, 34, 19, 30, 31, 15],itemStyle:{normal:{color:'#33CC66'}}}),
-                    merge({},this.series,{name:'玩家',data:[23, 44, 20, 4, 31, 65],itemStyle:{normal:{color:'#242424'}}})
+                    merge({},this.series,{name:'进卡',data:this.getCard}),
+                    merge({},this.series,{name:'代理',data:this.agentBuyCard,itemStyle:{normal:{color:'#33CC66'}}}),
+                    merge({},this.series,{name:'玩家',data:this.playerBuyCard,itemStyle:{normal:{color:'#242424'}}})
                 ]
             })
         },

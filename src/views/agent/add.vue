@@ -55,10 +55,10 @@
         data() {
             return {
                 creatAgent:{
-                    uname:'ceshi006',
-                    pwd:'123456',
-                    phone:'13410079006',
-                    name:'测试006',
+                    uname:'',
+                    pwd:'',
+                    phone:'',
+                    name:'',
                     level:'',
                     card:1,
                 },
@@ -94,10 +94,10 @@
         },
         methods:{
             ...mapMutations({
-                setCanLevel: 'agent/SET_PRECHOOSE_LEVEL' // 将 `this.add()` 映射为 `this.$store.commit('increment')`
+                setCanLevel: 'agent/SET_PRECHOOSE_LEVEL' 
             }),
             ...mapActions({
-                getMyCard: 'agent/getMyCard' // 将 `this.add()` 映射为 `this.$store.commit('increment')`
+                getMyCard: 'agent/getMyCard' 
             }),
             //取消
             cancelnow() {
@@ -119,7 +119,7 @@
                                 'phone':this.creatAgent.phone,
                                 'level':this.creatAgent.level,
                                 'pwd': md5( String(this.creatAgent.pwd) ),
-                                'card':this.creatAgent.card
+                                'card':Number(this.creatAgent.card)
                             }
                         }
                         api.addAgent(reqData).then(res =>{

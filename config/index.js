@@ -10,14 +10,14 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: { //if need 
-        '/pengkuan': {
-            target: 'http://api.mogumj.com', // 你接口的域名
-            pathRewrite: {
-                '^/pengkuan': ''
-            },
-            secure: false,      // 如果是https接口，需要配置这个参数
-            changeOrigin: true,     // 如果接口跨域，需要进行这个参数配置
-        }
+        // '/pengkuan': {
+        //     target: 'http://api.mogumj.com', // 你接口的域名
+        //     pathRewrite: {
+        //         '^/pengkuan': ''
+        //     },
+        //     secure: false,      // 如果是https接口，需要配置这个参数
+        //     changeOrigin: true,     // 如果接口跨域，需要进行这个参数配置
+        // }
     },
 
     // Various Dev Server settings
@@ -58,18 +58,18 @@ module.exports = {
 
   build: {
     // Template for index.html
-    index: path.resolve(__dirname, '../dist/active.html'),
+    index: path.resolve(__dirname, '../dist/index.html'),
 
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: 'other/activeCenter',
+    assetsSubDirectory: '',
     assetsPublicPath: './',
 
     /**
      * Source Maps
      */
 
-    productionSourceMap: true,
+    productionSourceMap: false,
     // https://webpack.js.org/configuration/devtool/#production
     devtool: '#source-map',
 
@@ -88,18 +88,18 @@ module.exports = {
   },
   test: {
     // Template for index.html
-    index: path.resolve(__dirname, '../dist/active.html'),
+    index: path.resolve(__dirname, '../dist/index.html'),
 
     // Paths
     assetsRoot: path.resolve(__dirname, '../dist'),
-    assetsSubDirectory: 'other/activeCenter',
+    assetsSubDirectory: '',
     assetsPublicPath: './',
 
     /**
      * Source Maps
      */
 
-    productionSourceMap: true,
+    productionSourceMap: false,
     // https://webpack.js.org/configuration/devtool/#production
     devtool: '#source-map',
 

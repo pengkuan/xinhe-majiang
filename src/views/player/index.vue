@@ -3,12 +3,12 @@
         <xh-header label="首页 / 玩家列表"></xh-header>
         <!-- 搜索start -->
         <el-form :inline="true" :model="search" ref="search" label-width="60px" size="small" class="demo-form-inline">
-            <el-form-item label="搜索：" prop="txnId">
-                <el-input v-model="search.txnId" placeholder="请输入关键字"></el-input>
+            <el-form-item label="搜索：" prop="key">
+                <el-input v-model="search.key" placeholder="请输入关键字"></el-input>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="init">查询</el-button>
-                <el-button @click="reset('search')">重置</el-button>
+                <el-button :disabled="search.key?false:true" type="primary" @click="query">查询</el-button>
+                <el-button  @click="reset('search')">重置</el-button>
             </el-form-item>
         </el-form>
         <br>
@@ -17,11 +17,11 @@
             <el-table-column prop="head" label="头像"></el-table-column>
             <el-table-column prop="id" label="游戏ID"></el-table-column>
             <el-table-column prop="number" label="绑定代理"></el-table-column>
-            <el-table-column prop="restCard" label="剩余房卡"></el-table-column>
+            <el-table-column prop="card" label="剩余房卡"></el-table-column>
             <el-table-column prop="time" label="注册时间"></el-table-column>
-            <el-table-column prop="lastLoginTime" label="最后登录时间"></el-table-column>
-            <el-table-column prop="lastLoginIp" label="最后登录IP"></el-table-column>
-            <el-table-column prop="loginTime" label="登录次数"></el-table-column>
+            <el-table-column prop="lastlogin.time" label="最后登录时间"></el-table-column>
+            <el-table-column prop="lastlogin.ip" label="最后登录IP"></el-table-column>
+            <el-table-column prop="login" label="登录次数"></el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
                     <el-button class='indexFunBtn' type="primary" @click="sendCard(scope.row.id)" size="small">发卡</el-button>
@@ -43,8 +43,8 @@ export default {
         return {
             dataList: [],
             search: {
-                "txnId": "",
-                "pageIndex": 0,
+                "key": "",
+                "pageIndex": 1,
                 "pageSize": "10"
             },
             currentPage: 1,
@@ -55,6 +55,15 @@ export default {
         this.init()
     },
     methods: {
+        async query(){
+            let res = await api.getDetail({type:'player',key:String(this.search.key)})
+            if (res.code != 0) {
+                this.$alert(res.msg,"提示")
+                return
+            }
+            this.dataList = res.list
+            this.total = 1
+        },
         async init(){
             let res = await api.playerList({page:this.search.pageIndex})
             if (res.code != 0) {
@@ -66,7 +75,7 @@ export default {
         },
         handleCurrentChange(val) {
             this.currentPage = val
-            this.search.pageIndex = String(val - 1)
+            this.search.pageIndex = val
             this.init()
         },
         reset(formName){

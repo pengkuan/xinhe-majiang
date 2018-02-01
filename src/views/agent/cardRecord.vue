@@ -2,15 +2,15 @@
     <div id = "rewardRecord">
         <xh-header label="代理发卡记录"></xh-header>
         <el-table border :data="dataList" style="width: 100%,min-height:300px">
-            <el-table-column prop="orderId" label="订单号"></el-table-column>
-            <el-table-column prop="amount" label="数量"></el-table-column>
+            <el-table-column prop="id" label="订单号"></el-table-column>
+            <el-table-column prop="num" label="数量"></el-table-column>
             <el-table-column prop="sendType" label="赠送类型"></el-table-column>
-            <el-table-column prop="sendId" label="赠送方ID"></el-table-column>
-            <el-table-column prop="sendAccount" label="赠送方账号"></el-table-column>
-            <el-table-column prop="acceptId" label="接受方ID"></el-table-column>
-            <el-table-column prop="acceptAccount" label="接受方账号"></el-table-column>
-            <el-table-column prop="sendName" label="赠送人"></el-table-column>
-            <el-table-column prop="sendTime" label="赠送时间"></el-table-column>
+            <el-table-column prop="from.id" label="赠送方ID"></el-table-column>
+            <el-table-column prop="from.uname" label="赠送方账号"></el-table-column>
+            <el-table-column prop="to.id" label="接受方ID"></el-table-column>
+            <el-table-column prop="to.uname" label="接受方账号"></el-table-column>
+            <el-table-column prop="from.name" label="赠送人"></el-table-column>
+            <el-table-column prop="time" label="赠送时间"></el-table-column>
             
         </el-table>
         <div class="hjx-pagination">
@@ -28,7 +28,7 @@ export default {
             dataList: [],
             search: {
                 "txnId": "",
-                "pageIndex": 0,
+                "pageIndex": 1,
                 "pageSize": "10"
             },
             currentPage: 1,
@@ -41,7 +41,7 @@ export default {
     },
     methods: {
         async init(){
-            let res = await api.sendRecord({page:Number(this.search.pageIndex) , type:'agent'})
+            let res = await api.sendRecord({page:this.search.pageIndex , type:'agent'})
             if (res.code != 0) {
                 this.$alert(res.msg,"提示")
                 return
@@ -50,9 +50,8 @@ export default {
             this.total = res.total
         },
         handleCurrentChange(val) {
-            console.log(77777)
             this.currentPage = val
-            this.search.pageIndex = String(val - 1)
+            this.search.pageIndex = val
             this.init()
         },
         reset(formName){

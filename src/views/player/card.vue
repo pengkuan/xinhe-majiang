@@ -86,13 +86,13 @@
                     this.$message('库存不足，无法赠送！')
                     return
                 }
-                api.sendCard( {type:'agent',num:Number(this.num),to:this.info.id} ).then((res)=>{
+                api.sendCard( {type:'player',num:Number(this.num),to:this.info.id} ).then((res)=>{
                     if (res.code != 0) {
                         this.$alert(res.msg,"提示")
                         return
                     }
                     this.$message("成功！")
-                    this.$router.push({ path: '/agent/index' })
+                    this.$router.push({ path: '/player/index' })
                 })
             }
         }
