@@ -32,7 +32,7 @@
             <el-form-item>
                 <div class="operate">
                     <el-button @click="onSubmit('creatAgent')" type="primary" >确认</el-button>
-                    <router-link to="index"><el-button >取消</el-button></router-link>
+                    <router-link to="/agent/index"><el-button >取消</el-button></router-link>
                 </div>
             </el-form-item>
         </el-form>
@@ -99,11 +99,6 @@
             ...mapActions({
                 getMyCard: 'agent/getMyCard' 
             }),
-            //取消
-            cancelnow() {
-                this.$router.push({ path: '/channel/employee' });
-            },
-
             //确定
             onSubmit(formName) {
                 this.$refs[formName].validate((valid) => {
