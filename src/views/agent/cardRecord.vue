@@ -4,7 +4,7 @@
         <el-table border :data="dataList" style="width: 100%,min-height:300px">
             <el-table-column prop="id" label="订单号"></el-table-column>
             <el-table-column prop="num" label="数量"></el-table-column>
-            <el-table-column prop="sendType" label="赠送类型"></el-table-column>
+            <el-table-column prop="type" label="赠送类型"></el-table-column>
             <el-table-column prop="from.id" label="赠送方ID"></el-table-column>
             <el-table-column prop="from.uname" label="赠送方账号"></el-table-column>
             <el-table-column prop="to.id" label="接受方ID"></el-table-column>

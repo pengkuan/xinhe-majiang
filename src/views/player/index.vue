@@ -14,7 +14,11 @@
         <br>
         <!-- 搜索end -->
         <el-table border :data="dataList" style="width: 100%,min-height:300px">
-            <el-table-column prop="head" label="头像"></el-table-column>
+            <el-table-column prop="head" label="头像">
+                <template slot-scope="scope">
+                    <img :src="scope.row.head">
+                </template>
+            </el-table-column>
             <el-table-column prop="id" label="游戏ID"></el-table-column>
             <el-table-column prop="number" label="绑定代理"></el-table-column>
             <el-table-column prop="card" label="剩余房卡"></el-table-column>
