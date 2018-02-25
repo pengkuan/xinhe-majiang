@@ -20,7 +20,7 @@
                 </el-col>
             </el-row> 
         </div>
-        <div else>暂只支持总代查看运营数据</div>
+        <div v-else>暂只支持总代查看运营数据</div>
         
     </div>
 </template>
