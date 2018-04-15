@@ -44,6 +44,7 @@ import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
+            isSearch:false,
             dataList: [],
             search: {
                 "key": "",
@@ -64,17 +65,21 @@ export default {
                 this.$alert(res.msg,"提示")
                 return
             }
+            this.isSearch = true
             this.dataList = res.list
-            this.total = 1
+            this.currentPage = 1
+            this.total = res.list.length
         },
         async init(){
-            let res = await api.agentList({page:this.search.pageIndex})
-            if (res.code != '0') {
-                this.$alert(res.msg,"提示")
-                return
+            if(!this.isSearch){
+                let res = await api.agentList({page:this.search.pageIndex})
+                if (res.code != '0') {
+                    this.$alert(res.msg,"提示")
+                    return
+                }
+                this.dataList = res.list
+                this.total = res.total
             }
-            this.dataList = res.list
-            this.total = res.total
         },
         handleCurrentChange(val) {
             this.currentPage = val
@@ -82,6 +87,7 @@ export default {
             this.init()
         },
         reset(formName){
+            this.isSearch = false
             this.$refs[formName].resetFields()
             this.init()
         },

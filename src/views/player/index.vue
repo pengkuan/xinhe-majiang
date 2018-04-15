@@ -20,7 +20,7 @@
                 </template>
             </el-table-column>
             <el-table-column prop="id" label="游戏ID"></el-table-column>
-            <el-table-column prop="number" label="绑定代理"></el-table-column>
+            <el-table-column prop="parent" label="绑定代理"></el-table-column>
             <el-table-column prop="card" label="剩余房卡"></el-table-column>
             <el-table-column prop="time" label="注册时间"></el-table-column>
             <el-table-column prop="lastlogin.time" label="最后登录时间"></el-table-column>
@@ -45,6 +45,7 @@ import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
+            isSearch:false,
             dataList: [],
             search: {
                 "key": "",
@@ -65,17 +66,21 @@ export default {
                 this.$alert(res.msg,"提示")
                 return
             }
+            this.isSearch = true
             this.dataList = res.list
-            this.total = 1
+            this.currentPage = 1
+            this.total = res.list.length
         },
         async init(){
-            let res = await api.playerList({page:this.search.pageIndex})
-            if (res.code != 0) {
-                this.$alert(res.msg,"提示")
-                return
+            if(!this.isSearch){
+                let res = await api.playerList({page:this.search.pageIndex})
+                if (res.code != 0) {
+                    this.$alert(res.msg,"提示")
+                    return
+                }
+                this.dataList = res.list
+                this.total = res.total
             }
-            this.dataList = res.list
-            this.total = res.total
         },
         handleCurrentChange(val) {
             this.currentPage = val
@@ -84,6 +89,7 @@ export default {
         },
         reset(formName){
             this.$refs[formName].resetFields()
+            this.isSearch = false
             this.init()
         },
          //发卡
@@ -95,7 +101,7 @@ export default {
         },
         //封号
         disabled(){
-
+            this.$message('功能开发中')
         }
     }
 

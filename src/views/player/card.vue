@@ -16,7 +16,7 @@
         <el-form label-width="120px">
             <el-form-item label="玩家ID：">{{info.id}}</el-form-item>
             <el-form-item label="玩家昵称：">{{info.nick}}</el-form-item>
-            <el-form-item label="创建时间：">{{info.phone}}</el-form-item>
+            <el-form-item label="创建时间：">{{info.time}}</el-form-item>
             <el-form-item label="剩余卡数：">{{info.card}}</el-form-item>
             <el-form-item label="玩家状态：">{{info.level}}</el-form-item>
             <el-form-item label="我的库存：">{{myCard}}</el-form-item>
